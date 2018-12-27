@@ -1,0 +1,99 @@
+{
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "script",
+    "ecmaFeatures": {
+      "impliedStrict": true
+    }
+  },
+  "env": {
+    "browser": true
+  },
+  "globals": {
+    "jquery": true
+  },
+  "rules": {
+    "indent": ["error", 2], // Use 4 spaces for indentation.
+    "max-len": ["warn", 120], // Avoid having lines of code that are longer than 120 characters
+    "quotes": ["error", "single"], // Use single quotes for strings except to avoid escaping.
+    "no-unused-vars": ["warn", { "vars": "all", "args": "all" }], // No unused variables
+    "keyword-spacing": ["error", { "before": true, "after": true }], // Add a space after keywords.
+    "eqeqeq": ["warn", "smart"], // Always use === instead of ==. The "smart" option enforces the use of === and !== except for these cases: Comparing two literal values, Evaluating the value of typeof and Comparing against null
+    "space-infix-ops": ["error"], // Infix operators must be spaced.
+    "comma-spacing": ["error", { "before": false, "after": true }], // Commas should have a space after them.
+    "brace-style": ["error", "1tbs", { "allowSingleLine": false }], // Consistent brace style for blocks.
+    "curly": "error", // For if statements, use curly braces.
+    "no-multiple-empty-lines": ["warn", { "max": 2, "maxEOF": 1, "maxBOF": 1 }], // Multiple blank lines not allowed.
+    "operator-linebreak": ["warn", "after"], // For the ternary operator in a multi-line setting, place ? and : on their own lines.
+    "no-nested-ternary": ["error"], // Ternaries should not be nested and generally be single line expressions.
+    "one-var": ["error", "never"], // For var declarations, write each declaration in its own statement.
+    "block-spacing": ["error", "always"], // Add spaces inside single line blocks.
+    "camelcase": "error", // Use camelcase when naming variables and functions.
+    "comma-dangle": ["error", "never"], // Trailing commas not allowed.
+    "comma-style": ["error", "last"], // Commas must be placed at the end of the current line.
+    "eol-last": ["warn", "always"], // Files must end with a newline.
+    "func-call-spacing": ["error", "never"], // No space between function identifiers and their invocations.
+    "key-spacing": ["error", { "beforeColon": false, "afterColon": true }], // Add space between colon and value in key value pairs.
+    "no-array-constructor": "error", // Use array literals instead of array constructors.
+    "no-new-object": "error", // No using the Object constructor.
+    "no-new-func": "error", // No using the Function constructor.
+    "no-new-symbol": "error", // No using the Symbol constructor.
+    "no-new-wrappers": "error", // No using primitive wrapper instances.
+    "no-obj-calls": "error", // No calling global object properties as functions.
+    "new-cap": ["error", { "capIsNew": true, "newIsCap": true }], // Constructor names must begin with a capital letter.
+    "new-parens": "error", // Constructor with no arguments must be invoked with parentheses.
+    "no-const-assign": "error", // Avoid modifying variables declared using const.
+    "no-delete-var": "error", // No delete operator on variables.
+    "no-dupe-args": "error", // No duplicate arguments in function definitions.
+    "no-dupe-class-members": "error", // No duplicate name in class members.
+    "no-dupe-keys": "error", // No duplicate keys in object literals.
+    "no-duplicate-case": "error", // No duplicate case labels in switch statements.
+    "no-duplicate-imports": "error", // Use a single import statement per module.
+    "no-empty-pattern": "error", // No empty destructuring patterns.
+    "no-ex-assign": "error", // No reassigning exceptions in catch clauses.
+    "no-extra-boolean-cast": "error", // Avoid unnecessary boolean casts.
+    "no-extra-parens": "warn", // No unnecessary parentheses around function expressions.
+    "no-fallthrough": "error", // Use break to prevent fallthrough in switch cases.
+    "no-floating-decimal": "error", // No floating decimals.
+    "no-func-assign": "error", // Avoid reassigning function declarations.
+    "no-global-assign": "error", // No reassigning read-only global variables.
+    "no-inner-declarations": "warn", // No function declarations in nested blocks.
+    "no-invalid-regexp": "error", // No invalid regular expression strings in RegExp constructors.
+    "no-lone-blocks": "error", // No unnecessary nested blocks.
+    "no-multi-spaces": "error", // Do not use multiple spaces except for indentation.
+    "no-multi-str": "error", // No multiline strings.
+    "no-redeclare": "error", // No redeclaring variables.
+    "no-regex-spaces": "error", // Avoid multiple spaces in regular expression literals.
+    "no-return-assign": "error", // Assignments in return statements must be surrounded by parentheses.
+    "no-self-assign": "error", // Avoid assigning a variable to itself
+    "no-self-compare": "error", // Avoid comparing a variable to itself.
+    "no-shadow-restricted-names": "error", // Restricted names should not be shadowed.
+    "no-sparse-arrays": "error", // Sparse arrays are not allowed.
+    "no-template-curly-in-string": "error", // Regular strings must not contain template literal placeholders.
+    "no-throw-literal": "error", // Only throw an Error object.
+    "no-undef-init": "warn", // Initializing to undefined is not allowed.
+    "no-unmodified-loop-condition": "error", // No unmodified conditions of loops.
+    "no-unneeded-ternary": "error", // No ternary operators when simpler alternatives exist.
+    "no-unreachable": "warn", // No unreachable code after return, throw, continue, and break statements.
+    "no-useless-escape": "error", // No unnecessary use of escape.
+    "no-useless-rename": "warn", // Renaming import, export, and destructured assignments to the same name is not allowed.
+    "no-whitespace-before-property": "error", // No whitespace before properties.
+    "rest-spread-spacing": "error", // No whitespace between spread operators and their expressions.
+    "semi-spacing": "error", // Semicolons must have a space after and no space before.
+    "space-before-blocks": "error", // Must have a space before blocks.
+    "space-in-parens": "error", // No spaces inside parentheses.
+    "space-unary-ops": "error", // Unary operators must have a space after.
+    "spaced-comment": "error", // Use spaces inside comments.
+    "template-curly-spacing": "error", // No spacing in template strings.
+    "use-isnan": "error", // Use isNaN() when checking for NaN.
+    "valid-typeof": "error", // typeof must be compared to a valid string.
+    "wrap-iife": "error", // Immediately Invoked Function Expressions (IIFEs) must be wrapped.
+    "no-confusing-arrow": "error", // void confusing arrow function syntax (=>) with comparison operators (<=, >=)
+    "semi": "error",
+    "quote-props": ["error", "as-needed"],
+    "strict": "error",
+    "no-eval": "error", // No using eval().
+    "no-implied-eval": "error", // No implied eval().
+    "no-debugger": "warn" // Warn for left debuggers
+  }
+}
