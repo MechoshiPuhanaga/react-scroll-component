@@ -14,6 +14,7 @@ import DIRECTION_CONFIG from './config';
  *   height | width: {string} - 'height' for 'vertical' and 'width' for 'horizontal'
  *   observe: {boolean} - resize scroller on child and subtree changes; defaults to true
  *   resizeDebounce: {number}, // in milliseconds
+ *   scrollbarSize: {number},
  *   scroller: {
  *    left | right: {string},
  *    width: {string},
@@ -29,6 +30,8 @@ import DIRECTION_CONFIG from './config';
  */
 export class Scroll extends PureComponent {
   static resizeDebounce = 400;
+
+  static scrollbarSize = 15;
 
   static debounce = (fn, time) => {
     let timeout;
@@ -50,6 +53,7 @@ export class Scroll extends PureComponent {
       overflowX: this.config.overflow.x,
       overflowY: this.config.overflow.y
     },
+    containerSizeSet: false,
     moving: false,
     observe: this.props.observe !== undefined ? this.props.observe : true,
     scrollerStyles: {
@@ -79,7 +83,9 @@ export class Scroll extends PureComponent {
   getNativeScrollbarSize(container) {
     return (
       container.current[this.config.scrollbar.offsetDimension] -
-      container.current[this.config.scrollbar.clientDimension] || 15
+      container.current[this.config.scrollbar.clientDimension] ||
+      this.props.scrollbarSize ||
+      Scroll.scrollbarSize
     );
   }
 
@@ -210,17 +216,34 @@ export class Scroll extends PureComponent {
   };
 
   setContainerSize(callback) {
-    const scrollBarSize = this.getNativeScrollbarSize(this.container);
     this.setState(prevState => {
       const containerSize = this.container.current[this.config.scrollbar.offsetDimension];
+      const scrollBarSize = this.getNativeScrollbarSize(this.container);
+
+
+      const factor =
+        (this.state.wrapperStyles.display === 'inline-block' && this.props.direction === 'vertical') ||
+        this.props.direction === 'horizontal';
+
+      let cs = null;
+
+      if (factor) {
+        cs = containerSize;
+      } else {
+        cs = containerSize + (this.state.containerSizeSet ? 0 : scrollBarSize);
+      }
+
+      const ws = cs - scrollBarSize;
+
       return {
+        containerSizeSet: true,
         containerStyles: {
           ...prevState.containerStyles,
-          [this.config.container.dimension]: `${containerSize}px`
+          [this.config.container.dimension]: `${cs}px`
         },
         wrapperStyles: {
           ...prevState.wrapperStyles,
-          [this.config.wrapper.overflowDimension]: `${containerSize - scrollBarSize}px`
+          [this.config.wrapper.overflowDimension]: `${ws}px`
         }
       };
     }, callback);
@@ -244,6 +267,7 @@ export class Scroll extends PureComponent {
     this.setState(
       prevState => {
         return {
+          containerSizeSet: false,
           containerStyles: {
             ...prevState.containerStyles,
             [this.config.container.dimension]: `auto`
