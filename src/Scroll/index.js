@@ -70,6 +70,7 @@ export class Scroll extends PureComponent {
       position: 'relative',
       display: this.props.display || 'inline-block',
       [this.config.wrapper.overflowDimension]: 'auto',
+      width: this.props.direction === 'horizontal' ? this.props.width : 'auto',
       overflow: 'hidden'
     }
   };
