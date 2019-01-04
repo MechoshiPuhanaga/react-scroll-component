@@ -12,9 +12,10 @@ import DIRECTION_CONFIG from './config';
  *   direction: {string} - 'vertical' | 'horizontal'
  *   display: {string},
  *   height | width: {string} - 'height' for 'vertical' and 'width' for 'horizontal'
+ *   initTimeout: {number} - in milliseconds - default is `200` - needed to ensure the rendering on the scroller on some devices or browsers
+ *	 noInitTimeout: {boolean} - default is `true`
  *   observe: {boolean} - resize scroller on child and subtree changes; defaults to true
  *   resizeDebounce: {number}, // in milliseconds
- *   scrollbarSize: {number},
  *   scroller: {
  *    left | right: {string},
  *    width: {string},
@@ -31,12 +32,12 @@ import DIRECTION_CONFIG from './config';
 export class Scroll extends PureComponent {
   static resizeDebounce = 400;
 
-  static scrollbarSize = 15;
+  static initTimeout = 200;
 
   static debounce = (fn, time) => {
     let timeout;
 
-    return function () {
+    return function() {
       const functionCall = () => fn.apply(this, arguments);
 
       clearTimeout(timeout);
@@ -51,7 +52,8 @@ export class Scroll extends PureComponent {
     containerStyles: {
       [this.config.scrollDimension]: this.props[this.config.scrollDimension],
       overflowX: this.config.overflow.x,
-      overflowY: this.config.overflow.y
+      overflowY: this.config.overflow.y,
+      willChange: 'scroll-position'
     },
     containerSizeSet: false,
     moving: false,
@@ -63,7 +65,8 @@ export class Scroll extends PureComponent {
       // See https://www.chromestatus.com/features/5093566007214080
       // and https://developers.google.com/web/updates/2017/01/scrolling-intervention
       touchAction: 'none',
-      transition: `${this.config.scrollDimension} 300ms ease-in-out`
+      transition: `${this.config.scrollDimension} 300ms ease-in-out`,
+      willChange: 'transform'
     },
     scrollerTranslate: 0,
     wrapperStyles: {
@@ -80,15 +83,6 @@ export class Scroll extends PureComponent {
   container = React.createRef();
   scroller = React.createRef();
   wrapper = React.createRef();
-
-  getNativeScrollbarSize(container) {
-    return (
-      container.current[this.config.scrollbar.offsetDimension] -
-      container.current[this.config.scrollbar.clientDimension] ||
-      this.props.scrollbarSize ||
-      Scroll.scrollbarSize
-    );
-  }
 
   getPagePosition(event, touchEvent, mouseEvent) {
     let position = 0;
@@ -113,19 +107,24 @@ export class Scroll extends PureComponent {
         subtree: true
       };
       this.observer = new MutationObserver(() => {
-        this.setScrollerSize();
-        this.setScrollerTranslate();
+        this.setScrollerSize(this.setScrollerTranslate);
       });
       this.observer.observe(this.container.current, observerConfig);
     }
 
-    setTimeout(() => {
-      this.setScrollerSize();
-      this.setScrollerTranslate();
-    }, 0);
+    if (this.props.noInitTimeout) {
+      this.setScrollerSize(this.setScrollerTranslate);
+    } else {
+      setTimeout(
+        () => {
+          this.setScrollerSize(this.setScrollerTranslate);
+        },
+        typeof this.props.initTimeout === 'number' ? this.props.initTimeout : Scroll.initTimeout
+      );
+    }
   }
 
-  setScrollerSize() {
+  setScrollerSize(cb) {
     const o = this.container.current[this.config.container.offsetDimension];
     const s = this.container.current[this.config.container.scrollDimension];
     const size = Math.floor(Math.pow(o, 2) / s);
@@ -137,7 +136,7 @@ export class Scroll extends PureComponent {
           [this.config.scrollDimension]: `${size}px`
         }
       };
-    });
+    }, cb);
   }
 
   startMovingScroller = event => {
@@ -188,8 +187,8 @@ export class Scroll extends PureComponent {
       const scr = this.container.current[this.config.container.scrollSide];
       const o = this.container.current[this.config.container.offsetDimension];
       const s = this.container.current[this.config.container.scrollDimension];
-      const scrollerSize = this.scroller.current[this.config.scroller.offsetDimension];
-      const translate = ((o - scrollerSize) / (s - o)) * scr;
+      const scrollerSize = parseInt(this.state.scrollerStyles[this.config.scrollDimension], 10);
+      const translate = ((o - scrollerSize) / (s - o)) * scr || 0;
       this.setState(prevState => {
         let transform = '';
         if (this.props.direction === 'horizontal') {
@@ -216,40 +215,6 @@ export class Scroll extends PureComponent {
     this.setState({ moving: false });
   };
 
-  setContainerSize(callback) {
-    this.setState(prevState => {
-      const containerSize = this.container.current[this.config.scrollbar.offsetDimension];
-      const scrollBarSize = this.getNativeScrollbarSize(this.container);
-
-
-      const factor =
-        (this.state.wrapperStyles.display === 'inline-block' && this.props.direction === 'vertical') ||
-        this.props.direction === 'horizontal';
-
-      let cs = null;
-
-      if (factor) {
-        cs = containerSize;
-      } else {
-        cs = containerSize + (this.state.containerSizeSet ? 0 : scrollBarSize);
-      }
-
-      const ws = cs - scrollBarSize;
-
-      return {
-        containerSizeSet: true,
-        containerStyles: {
-          ...prevState.containerStyles,
-          [this.config.container.dimension]: `${cs}px`
-        },
-        wrapperStyles: {
-          ...prevState.wrapperStyles,
-          [this.config.wrapper.overflowDimension]: `${ws}px`
-        }
-      };
-    }, callback);
-  }
-
   setContainerScroll(val) {
     const o = this.container.current[this.config.container.offsetDimension];
     const s = this.container.current[this.config.container.scrollDimension];
@@ -265,24 +230,7 @@ export class Scroll extends PureComponent {
 
   resizeHandler = Scroll.debounce(event => {
     this.clean();
-    this.setState(
-      prevState => {
-        return {
-          containerSizeSet: false,
-          containerStyles: {
-            ...prevState.containerStyles,
-            [this.config.container.dimension]: `auto`
-          },
-          wrapperStyles: {
-            ...prevState.wrapperStyles,
-            [this.config.wrapper.overflowDimension]: `auto`
-          }
-        };
-      },
-      () => {
-        this.setContainerSize(this.init);
-      }
-    );
+    this.init();
   }, this.props.resizeDebounce || Scroll.resizeDebounce);
 
   clean() {
@@ -310,8 +258,28 @@ export class Scroll extends PureComponent {
           ref={this.scroller}
           style={this.state.scrollerStyles}
         />
-        <div onScroll={this.setScrollerTranslate} ref={this.container} style={this.state.containerStyles}>
+        <div
+          className={'react-scroll-component'}
+          onScroll={this.setScrollerTranslate}
+          ref={this.container}
+          style={this.state.containerStyles}
+        >
           {this.props.children}
+          <style
+            dangerouslySetInnerHTML={{
+              __html: `
+            .react-scroll-component {
+                -ms-overflow-style: none;
+                overflow: -moz-scrollbars-none;
+                scrollbar-width: none;
+            }
+            .react-scroll-component::-webkit-scrollbar {
+                display: none;
+                width: 0 !important;
+            }
+            `
+            }}
+          />
         </div>
       </div>
     ) : null;
@@ -319,16 +287,14 @@ export class Scroll extends PureComponent {
 
   componentDidMount() {
     if (this.props.children) {
-      setTimeout(() => {
-        this.setContainerSize(this.init);
-      }, 0);
+      this.init();
     }
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (this.props.children && this.props.children !== prevProps.children) {
       this.clean();
-      this.setContainerSize(this.init);
+      this.init();
     } else if (!this.props.children) {
       this.clean();
     }
