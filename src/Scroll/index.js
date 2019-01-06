@@ -13,7 +13,7 @@ import DIRECTION_CONFIG from './config';
  *   display: {string},
  *   height | width: {string} - 'height' for 'vertical' and 'width' for 'horizontal'
  *   initTimeout: {number} - in milliseconds - default is `200` - needed to ensure the rendering on the scroller on some devices or browsers
- *	 noInitTimeout: {boolean} - default is `true`
+ *	 noInitTimeout: {boolean} - default is `false`
  *   observe: {boolean} - resize scroller on child and subtree changes; defaults to true
  *   resizeDebounce: {number}, // in milliseconds
  *   scroller: {
