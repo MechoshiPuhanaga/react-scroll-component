@@ -50,3 +50,19 @@ import {Scroll} from 'react-scroll-component';
 ## Browser Support
 
 - Chrome, Edge, Firefox, IE11, Safari. Tested on mobile devices too.
+
+- To be sure that the scrollbar will be hidden on Firefox, you can address the container with the attribute css selector `data-direction="vertical"/"horizontal"` property and set the appropriate margin property:
+
+```
+.react-scroll-component[data-direction="vertical"]  {
+  margin-right: -17px !important;
+  overflow-x:hidden;
+}
+```
+
+```
+.react-scroll-component[data-direction="horizontal"]  {
+  margin-bottom: -17px !important;
+  overflow-y:hidden;
+}
+```

@@ -259,6 +259,7 @@ export class Scroll extends PureComponent {
           style={this.state.scrollerStyles}
         />
         <div
+          data-direction={this.props.direction}
           className={'react-scroll-component'}
           onScroll={this.setScrollerTranslate}
           ref={this.container}
