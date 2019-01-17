@@ -125,6 +125,9 @@ export class Scroll extends PureComponent {
   }
 
   setScrollerSize(cb) {
+    if (!this.container.current) {
+      return;
+    }
     const o = this.container.current[this.config.container.offsetDimension];
     const s = this.container.current[this.config.container.scrollDimension];
     const size = Math.floor(Math.pow(o, 2) / s);
@@ -140,6 +143,9 @@ export class Scroll extends PureComponent {
   }
 
   startMovingScroller = event => {
+    if (!this.wrapper.current) {
+      return;
+    }
     event.preventDefault();
     event.stopPropagation();
 
@@ -152,7 +158,7 @@ export class Scroll extends PureComponent {
   };
 
   moveScroller = event => {
-    if (this.state.moving) {
+    if (this.state.moving && this.scroller.current && this.wrapper.current) {
       const pagePosition = this.getPagePosition(event, 'touchmove', 'mousemove');
       const max =
         this.wrapper.current[this.config.wrapper.clientDimension] -
@@ -183,7 +189,7 @@ export class Scroll extends PureComponent {
   };
 
   setScrollerTranslate = event => {
-    if (!this.state.moving) {
+    if (!this.state.moving && this.container.current) {
       const scr = this.container.current[this.config.container.scrollSide];
       const o = this.container.current[this.config.container.offsetDimension];
       const s = this.container.current[this.config.container.scrollDimension];
@@ -216,12 +222,18 @@ export class Scroll extends PureComponent {
   };
 
   setContainerScroll(val) {
+    if (!this.container.current || !this.scroller.current) {
+      return;
+    }
+
     const o = this.container.current[this.config.container.offsetDimension];
     const s = this.container.current[this.config.container.scrollDimension];
     const scrollerSize = this.scroller.current[this.config.scroller.offsetDimension];
     if (requestAnimationFrame) {
       requestAnimationFrame(() => {
-        this.container.current[this.config.container.scrollSide] = ((s - o) / (o - scrollerSize)) * val;
+        if (this.container.current) {
+          this.container.current[this.config.container.scrollSide] = ((s - o) / (o - scrollerSize)) * val;
+        }
       });
     } else {
       this.container.current[this.config.container.scrollSide] = ((s - o) / (o - scrollerSize)) * val;
