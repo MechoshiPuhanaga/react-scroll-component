@@ -301,6 +301,9 @@ export class Scroll extends PureComponent {
   componentDidMount() {
     if (this.props.children) {
       this.init();
+      if (typeof this.props.containerRef === 'function') {
+        this.props.containerRef(this.container);
+      }
     }
   }
 
@@ -308,6 +311,9 @@ export class Scroll extends PureComponent {
     if (this.props.children && this.props.children !== prevProps.children) {
       this.clean();
       this.init();
+      if (typeof this.props.containerRef === 'function') {
+        this.props.containerRef(this.container);
+      }
     } else if (!this.props.children) {
       this.clean();
     }
