@@ -9,9 +9,12 @@ import DIRECTION_CONFIG from './config';
  *
  * const SCROLL_CONFIG = {
  *   className: {string}, // don't override 'height' or 'width' according to the 'direction',
+ *   containerClass: {string} - Add class to the inner container that will wrap your content. Be careful when adding css properties. You might break the scroller here.
+ *   containerRef: {function} - Use it to get a reference to the scrolling container. You can set scrollTop for 'vertical' or scrollLeft for 'horizontal' from the parent component. Don't forget to clear this reference.
  *   direction: {string} - 'vertical' | 'horizontal'
  *   display: {string},
  *   height | width: {string} - 'height' for 'vertical' and 'width' for 'horizontal'
+ *   maxHeight | maxWidth: {string} - Set 'maxHeight' for 'vertical' scroll. Set 'maxWidth' for 'horizontal' scroll. Defaults to 'none'
  *   initTimeout: {number} - in milliseconds - default is `200` - needed to ensure the rendering on the scroller on some devices or browsers
  *	 noInitTimeout: {boolean} - default is `false`
  *   observe: {boolean} - resize scroller on child and subtree changes; defaults to true
@@ -51,6 +54,7 @@ export class Scroll extends PureComponent {
     compensation: 0,
     containerStyles: {
       [this.config.scrollDimension]: this.props[this.config.scrollDimension],
+      [`max${this.config.scrollDimension}`]: this.props[`max${this.config.scrollDimension}`] || 'none',
       overflowX: this.config.overflow.x,
       overflowY: this.config.overflow.y,
       willChange: 'scroll-position'
@@ -280,7 +284,7 @@ export class Scroll extends PureComponent {
         />
         <div
           data-direction={this.props.direction}
-          className={'react-scroll-component'}
+          className={['react-scroll-component', this.props.containerClass].filter(Boolean).join(' ')}
           onScroll={this.setScrollerTranslate}
           ref={this.container}
           style={this.state.containerStyles}

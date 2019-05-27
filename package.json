@@ -1,6 +1,6 @@
 {
   "name": "react-scroll-component",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "description": "Custom react scroll component",
   "main": "dist/index.js",
   "scripts": {
