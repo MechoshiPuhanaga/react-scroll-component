@@ -303,6 +303,7 @@ export class Scroll extends PureComponent {
           onScroll={this.setScrollerTranslate}
           ref={this.container}
           style={this.state.containerStyles}
+          onTransitionEnd={this.scrollerResize}
         >
           {this.props.children}
           <style
