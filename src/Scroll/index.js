@@ -254,6 +254,14 @@ export class Scroll extends PureComponent {
     this.observer = null;
   }
 
+  reset = () => {
+    this.clean();
+    this.init();
+    if (typeof this.props.containerRef === 'function') {
+      this.props.containerRef(this.container);
+    }
+  };
+
   // *************************************************
   // ************** Lifecycle Methods ****************
   // *************************************************
@@ -309,13 +317,20 @@ export class Scroll extends PureComponent {
 
   componentDidUpdate(prevProps, prevState) {
     if (this.props.children && this.props.children !== prevProps.children) {
-      this.clean();
-      this.init();
-      if (typeof this.props.containerRef === 'function') {
-        this.props.containerRef(this.container);
-      }
+      this.reset();
     } else if (!this.props.children) {
       this.clean();
+    }
+
+    if (this.props[this.config.scrollDimension] !== prevProps[this.config.scrollDimension]) {
+      this.setState(prevState => {
+        return {
+          containerStyles: {
+            ...prevState.containerStyles,
+            [this.config.scrollDimension]: this.props[this.config.scrollDimension]
+          }
+        };
+      }, this.reset);
     }
   }
 
