@@ -18,6 +18,7 @@ import DIRECTION_CONFIG from './config';
  *   initTimeout: {number} - in milliseconds - default is `200` - needed to ensure the rendering on the scroller on some devices or browsers
  *	 noInitTimeout: {boolean} - default is `false`
  *   observe: {boolean} - resize scroller on child and subtree changes; defaults to true
+ *   observerTimeout: {number} - Call the mutation observer callback wit timeout in milliseconds
  *   onScrollerToggle: {function} - Callback that will be called after scroller appears or disappears. An object with a boolean property 'isDisplayed' will be provided as an argument to the callback.                                                                                                                                                                                                                                                                                                                                                                                             |            - |
  *   resizeDebounce: {number}, // in milliseconds
  *   scroller: {
@@ -49,6 +50,7 @@ export class Scroll extends PureComponent {
     };
   };
 
+  observeTimeoutIndex = null;
   config = DIRECTION_CONFIG[this.props.direction];
 
   state = {
@@ -101,6 +103,10 @@ export class Scroll extends PureComponent {
     return position;
   }
 
+  scrollerResize = () => {
+    this.setScrollerSize(this.setScrollerTranslate);
+  };
+
   init() {
     document.addEventListener('mousemove', this.moveScroller);
     document.addEventListener('mouseup', this.stopMovingScroller);
@@ -114,7 +120,12 @@ export class Scroll extends PureComponent {
         subtree: true
       };
       this.observer = new MutationObserver(() => {
-        this.setScrollerSize(this.setScrollerTranslate);
+        if (typeof this.props.observerTimeout === 'number') {
+          clearTimeout(this.observeTimeoutIndex);
+          this.observeTimeoutIndex = setTimeout(this.scrollerResize, this.props.observerTimeout);
+        } else {
+          this.scrollerResize();
+        }
       });
       this.observer.observe(this.container.current, observerConfig);
     }
@@ -258,6 +269,7 @@ export class Scroll extends PureComponent {
     document.removeEventListener('mouseleave', this.stopMovingScroller);
     window.removeEventListener('resize', this.resizeHandler);
     this.observer && this.observer.disconnect();
+    clearTimeout(this.observeTimeoutIndex);
     this.observer = null;
   }
 
