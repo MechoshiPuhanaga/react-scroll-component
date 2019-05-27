@@ -18,6 +18,7 @@ import DIRECTION_CONFIG from './config';
  *   initTimeout: {number} - in milliseconds - default is `200` - needed to ensure the rendering on the scroller on some devices or browsers
  *	 noInitTimeout: {boolean} - default is `false`
  *   observe: {boolean} - resize scroller on child and subtree changes; defaults to true
+ *   onScrollerToggle: {function} - Callback that will be called after scroller appears or disappears. An object with a boolean property 'isDisplayed' will be provided as an argument to the callback.                                                                                                                                                                                                                                                                                                                                                                                             |            - |
  *   resizeDebounce: {number}, // in milliseconds
  *   scroller: {
  *    left | right: {string},
@@ -345,6 +346,14 @@ export class Scroll extends PureComponent {
           }
         };
       }, this.reset);
+    }
+
+    if (prevState.scrollerStyles.display !== this.state.scrollerStyles.display) {
+      if (typeof this.props.onScrollerToggle === 'function') {
+        this.props.onScrollerToggle({
+          isDisplayed: this.state.scrollerStyles.display === 'block'
+        });
+      }
     }
   }
 
