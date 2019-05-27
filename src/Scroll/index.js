@@ -54,7 +54,9 @@ export class Scroll extends PureComponent {
     compensation: 0,
     containerStyles: {
       [this.config.scrollDimension]: this.props[this.config.scrollDimension],
-      [`max${this.config.scrollDimension}`]: this.props[`max${this.config.scrollDimension}`] || 'none',
+      [`max${this.config.scrollDimension[0].toUpperCase()}${this.config.scrollDimension.slice(1)}`]:
+        this.props[`max${this.config.scrollDimension[0].toUpperCase()}${this.config.scrollDimension.slice(1)}`] ||
+        'none',
       overflowX: this.config.overflow.x,
       overflowY: this.config.overflow.y,
       willChange: 'scroll-position'
@@ -320,18 +322,26 @@ export class Scroll extends PureComponent {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    const { scrollDimension } = this.config;
+
     if (this.props.children && this.props.children !== prevProps.children) {
       this.reset();
     } else if (!this.props.children) {
       this.clean();
     }
 
-    if (this.props[this.config.scrollDimension] !== prevProps[this.config.scrollDimension]) {
+    const maxScrollDimension = `max${scrollDimension[0].toUpperCase()}${scrollDimension.slice(1)}`;
+
+    if (
+      this.props[scrollDimension] !== prevProps[scrollDimension] ||
+      this.props[maxScrollDimension] !== prevProps[maxScrollDimension]
+    ) {
       this.setState(prevState => {
         return {
           containerStyles: {
             ...prevState.containerStyles,
-            [this.config.scrollDimension]: this.props[this.config.scrollDimension]
+            [scrollDimension]: this.props[scrollDimension],
+            [maxScrollDimension]: this.props[maxScrollDimension] || 'none'
           }
         };
       }, this.reset);
