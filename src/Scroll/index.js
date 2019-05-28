@@ -20,6 +20,7 @@ import DIRECTION_CONFIG from './config';
  *   observe: {boolean} - resize scroller on child and subtree changes; defaults to true
  *   observerTimeout: {number} - Call the mutation observer callback wit timeout in milliseconds
  *   onScrollerToggle: {function} - Callback that will be called after scroller appears or disappears. An object with a boolean property 'isDisplayed' will be provided as an argument to the callback.                                                                                                                                                                                                                                                                                                                                                                                             |            - |
+ *   onTrackClick: {function} - Called when the track is clicked. An object with the following properties is provided as argument: 'container' and 'track' are references to the DOM elements, 'direction' (-1 for 'up' and 1 for 'down'), and 'event'. If this prop is provided it prevents the default shifting.
  *   resizeDebounce: {number}, // in milliseconds
  *   scroller: {
  *    left | right: {string},
@@ -30,6 +31,9 @@ import DIRECTION_CONFIG from './config';
  *    Use PascalCase for the vendor prefixed properties.
  *   },
  *   scrollerClass: {string}, // use !important but don't override 'position',
+ *   track: {boolean} - States if the track should be rendered. Defaults to false.
+ *   trackClass: {string} - The class that will be applied to the track element.
+ *   trackShift: {number} - The number of pixels that the container should scroll after clicking on the track.
  * };
  *
  * @class Scroll
@@ -91,6 +95,7 @@ export class Scroll extends PureComponent {
 
   container = React.createRef();
   scroller = React.createRef();
+  track = React.createRef();
   wrapper = React.createRef();
 
   getPagePosition(event, touchEvent, mouseEvent) {
@@ -281,6 +286,48 @@ export class Scroll extends PureComponent {
     }
   };
 
+  propagateWheelAsScrollOnContainer = event => {
+    if (this.container && this.container.current) {
+      this.container.current.scrollTop += event.deltaY;
+    }
+  };
+
+  trackClickHandler = event => {
+    if (
+      !this.container ||
+      !this.container.current ||
+      !this.scroller ||
+      !this.scroller.current ||
+      !this.track ||
+      !this.track.current ||
+      !this.wrapper ||
+      !this.wrapper.current
+    ) {
+      return;
+    }
+    event.stopPropagation();
+
+    const y = event.clientY - this.wrapper.current.offsetTop;
+    let direction = null;
+
+    if (y < this.state.scrollerTranslate) {
+      direction = -1;
+    } else if (y > this.state.scrollerTranslate + this.scroller.current.clientHeight) {
+      direction = 1;
+    }
+
+    if (typeof this.props.onTrackClick === 'function') {
+      this.props.onTrackClick({
+        container: this.container.current,
+        direction,
+        event,
+        track: this.track.current
+      });
+    } else if (typeof this.props.trackShift === 'number') {
+      this.container.current.scrollTop += direction * this.props.trackShift;
+    }
+  };
+
   // *************************************************
   // ************** Lifecycle Methods ****************
   // *************************************************
@@ -288,12 +335,25 @@ export class Scroll extends PureComponent {
   render() {
     return this.props.children ? (
       <div className={this.props.className} ref={this.wrapper} style={this.state.wrapperStyles}>
+        {this.props.track ? (
+          <div
+            ref={this.track}
+            className={this.props.trackClass}
+            style={{
+              position: 'absolute',
+              height: '100%'
+            }}
+            onClick={this.trackClickHandler}
+            onWheel={this.propagateWheelAsScrollOnContainer}
+          />
+        ) : null}
         <div
           className={this.props.scrollerClass}
           onMouseDown={this.startMovingScroller}
           onTouchStart={this.startMovingScroller}
           onTouchMove={this.moveScroller}
           onTouchEnd={this.stopMovingScroller}
+          onWheel={this.propagateWheelAsScrollOnContainer}
           ref={this.scroller}
           style={this.state.scrollerStyles}
         />
