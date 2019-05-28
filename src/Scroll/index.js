@@ -11,6 +11,7 @@ import DIRECTION_CONFIG from './config';
  *   className: {string}, // don't override 'height' or 'width' according to the 'direction',
  *   containerClass: {string} - Add class to the inner container that will wrap your content. Be careful when adding css properties. You might break the scroller here.
  *   containerRef: {function} - Use it to get a reference to the scrolling container. You can set scrollTop for 'vertical' or scrollLeft for 'horizontal' from the parent component. Don't forget to clear this reference.
+ *   dimensionChangeTimeout: {number} - Call the handler for dimension change (height, width, maxHeight, maxWidth) with a timeout in milliseconds.
  *   direction: {string} - 'vertical' | 'horizontal'
  *   display: {string},
  *   height | width: {string} - 'height' for 'vertical' and 'width' for 'horizontal'
@@ -54,6 +55,7 @@ export class Scroll extends PureComponent {
     };
   };
 
+  dimensionChangeTimeoutIndex = null;
   observeTimeoutIndex = null;
   config = DIRECTION_CONFIG[this.props.direction];
 
@@ -274,6 +276,7 @@ export class Scroll extends PureComponent {
     document.removeEventListener('mouseleave', this.stopMovingScroller);
     window.removeEventListener('resize', this.resizeHandler);
     this.observer && this.observer.disconnect();
+    clearTimeout(this.dimensionChangeTimeoutIndex);
     clearTimeout(this.observeTimeoutIndex);
     this.observer = null;
   }
@@ -326,6 +329,21 @@ export class Scroll extends PureComponent {
     } else if (typeof this.props.trackShift === 'number') {
       this.container.current.scrollTop += direction * this.props.trackShift;
     }
+  };
+
+  dimensionChangeHandler = () => {
+    const { scrollDimension } = this.config;
+    const maxScrollDimension = `max${scrollDimension[0].toUpperCase()}${scrollDimension.slice(1)}`;
+
+    this.setState(prevState => {
+      return {
+        containerStyles: {
+          ...prevState.containerStyles,
+          [scrollDimension]: this.props[scrollDimension],
+          [maxScrollDimension]: this.props[maxScrollDimension] || 'none'
+        }
+      };
+    }, this.reset);
   };
 
   // *************************************************
@@ -410,15 +428,14 @@ export class Scroll extends PureComponent {
       this.props[scrollDimension] !== prevProps[scrollDimension] ||
       this.props[maxScrollDimension] !== prevProps[maxScrollDimension]
     ) {
-      this.setState(prevState => {
-        return {
-          containerStyles: {
-            ...prevState.containerStyles,
-            [scrollDimension]: this.props[scrollDimension],
-            [maxScrollDimension]: this.props[maxScrollDimension] || 'none'
-          }
-        };
-      }, this.reset);
+      if (typeof this.props.dimensionChangeTimeout === 'number') {
+        clearTimeout(this.dimensionChangeTimeoutIndex);
+        this.dimensionChangeTimeoutIndex = setTimeout(() => {
+          this.dimensionChangeHandler();
+        }, this.props.dimensionChangeTimeout);
+      } else {
+        this.dimensionChangeHandler();
+      }
     }
 
     if (prevState.scrollerStyles.display !== this.state.scrollerStyles.display) {
