@@ -276,7 +276,6 @@ export class Scroll extends PureComponent {
     document.removeEventListener('mouseleave', this.stopMovingScroller);
     window.removeEventListener('resize', this.resizeHandler);
     this.observer && this.observer.disconnect();
-    clearTimeout(this.dimensionChangeTimeoutIndex);
     clearTimeout(this.observeTimeoutIndex);
     this.observer = null;
   }
@@ -449,6 +448,7 @@ export class Scroll extends PureComponent {
 
   componentWillUnmount() {
     this.clean();
+    clearTimeout(this.dimensionChangeTimeoutIndex);
   }
 }
 
