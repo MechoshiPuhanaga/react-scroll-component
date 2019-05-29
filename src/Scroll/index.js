@@ -31,7 +31,8 @@ import DIRECTION_CONFIG from './config';
  *    Add vendor prefixes if necessary.
  *    Use PascalCase for the vendor prefixed properties.
  *   },
- *   scrollerClass: {string}, // use !important but don't override 'position',
+ *   scrollerClass: {string}, // use !important but don't override 'position'
+ *   scrollSizeDebounce: {number} - If provided the scroller size will be calculated with timeout equal to the value (in milliseconds). Can be useful when the main dimension is dynamically changed with transition. Then this will recalculate the scroller size and display after transition is done.
  *   track: {boolean} - States if the track should be rendered. Defaults to false.
  *   trackClass: {string} - The class that will be applied to the track element.
  *   trackShift: {number} - The number of pixels that the container should scroll after clicking on the track.
@@ -44,7 +45,7 @@ export class Scroll extends PureComponent {
 
   static initTimeout = 200;
 
-  static debounce = (fn, time) => {
+  static debounce = (fn, time = 0) => {
     let timeout;
 
     return function() {
@@ -149,7 +150,7 @@ export class Scroll extends PureComponent {
     }
   }
 
-  setScrollerSize(cb) {
+  scrollerSizeSetter = cb => {
     if (!this.container.current) {
       return;
     }
@@ -165,6 +166,16 @@ export class Scroll extends PureComponent {
         }
       };
     }, cb);
+  };
+
+  debouncedScrollerSizeSetter = Scroll.debounce(this.scrollerSizeSetter, this.props.scrollSizeDebounce);
+
+  setScrollerSize(cb) {
+    if (typeof this.props.scrollSizeDebounce === 'number') {
+      this.debouncedScrollerSizeSetter(cb);
+    } else {
+      this.scrollerSizeSetter(cb);
+    }
   }
 
   startMovingScroller = event => {
