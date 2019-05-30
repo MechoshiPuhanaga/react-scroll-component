@@ -1,8 +1,7 @@
 # React scroller component
 
 ## React version
-
-- Uses the new lifecycle methods introduced in `React 16.3`
+`>= React 16.3`
 
 ## Install
 
@@ -60,21 +59,4 @@ import {Scroll} from 'react-scroll-component';
 
 ## Browser support
 
-- Chrome, Edge, Firefox, IE11, Safari. Tested on mobile browsers too.
-
-## Browser issues
-- To be sure that the scrollbar will be hidden on Firefox, you can address the container using the `:-moz-any()` selector grouping, provide the attribute css selector `data-direction="vertical"/"horizontal"` property and set the appropriate margin property:
-
-```
-:-moz-any(.react-scroll-component[data-direction="vertical"]) {
-  margin-right: -17px !important;
-  overflow-x:hidden;
-}
-```
-
-```
-:-moz-any(.react-scroll-component[data-direction="horizontal"])  {
-  margin-bottom: -17px !important;
-  overflow-y:hidden;
-}
-```
+- Chrome, Edge, Firefox, IE11, Safari on desktop and mobile.
