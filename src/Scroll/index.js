@@ -291,6 +291,7 @@ export class Scroll extends PureComponent {
   };
 
   trackClickHandler = event => {
+    event.stopPropagation();
     if (
       !this.container ||
       !this.container.current ||
@@ -303,7 +304,6 @@ export class Scroll extends PureComponent {
     ) {
       return;
     }
-    event.stopPropagation();
 
     const y = event.clientY - this.wrapper.current.offsetTop;
     let direction = null;
@@ -349,7 +349,7 @@ export class Scroll extends PureComponent {
   render() {
     return this.props.children ? (
       <div className={this.props.className} ref={this.wrapper} style={this.state.wrapperStyles}>
-        {this.props.track ? (
+        {this.props.track && this.state.scrollerStyles.display === 'block' ? (
           <div
             ref={this.track}
             className={this.props.trackClass}
@@ -357,7 +357,7 @@ export class Scroll extends PureComponent {
               position: 'absolute',
               height: '100%'
             }}
-            onClick={this.trackClickHandler}
+            onClickCapture={this.trackClickHandler}
             onWheel={this.propagateWheelAsScrollOnContainer}
           />
         ) : null}
