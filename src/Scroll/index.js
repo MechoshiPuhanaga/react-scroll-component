@@ -357,7 +357,7 @@ export class Scroll extends PureComponent {
               position: 'absolute',
               height: '100%'
             }}
-            onClickCapture={this.trackClickHandler}
+            onClick={this.trackClickHandler}
             onWheel={this.propagateWheelAsScrollOnContainer}
           />
         ) : null}
