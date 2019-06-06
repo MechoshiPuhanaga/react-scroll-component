@@ -147,7 +147,11 @@ export class Scroll extends PureComponent {
     }
     const o = this.container.current[this.config.container.offsetDimension];
     const s = this.container.current[this.config.container.scrollDimension];
-    const size = Math.floor(Math.pow(o, 2) / s);
+
+    const relativeSize = Math.floor(Math.pow(o, 2) / s);
+    let size = Math.max(relativeSize, this.props.minScrollerSize || 0);
+    size = Math.min(size, o);
+
     this._isMounted &&
       this.setState(prevState => {
         return {
