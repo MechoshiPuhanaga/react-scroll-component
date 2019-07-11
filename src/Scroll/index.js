@@ -309,12 +309,16 @@ export class Scroll extends PureComponent {
       return;
     }
 
-    const y = event.clientY - this.wrapper.current.offsetTop;
     let direction = null;
 
-    if (y < this.state.scrollerTranslate) {
+    const { top: scrollerTop, bottom: scrollerBottom } = this.scroller.current.getBoundingClientRect();
+
+    const clickIsAboveScroller = event.clientY < scrollerTop;
+    const clickIsBelowScroller = event.clientY > scrollerBottom;
+
+    if (clickIsAboveScroller) {
       direction = -1;
-    } else if (y > this.state.scrollerTranslate + this.scroller.current.clientHeight) {
+    } else if (clickIsBelowScroller) {
       direction = 1;
     }
 
