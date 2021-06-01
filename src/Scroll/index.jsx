@@ -10,8 +10,8 @@ export class Scroll extends PureComponent {
   static debounce = (fn, time = 0) => {
     let timeout;
 
-    return function() {
-      const functionCall = () => fn.apply(this, arguments);
+    return (...args) => {
+      const functionCall = () => fn.apply(this, args);
 
       clearTimeout(timeout);
       timeout = setTimeout(functionCall, time);
@@ -49,25 +49,36 @@ export class Scroll extends PureComponent {
   _isMounted = false;
 
   dimensionChangeTimeoutIndex = null;
+
   observeTimeoutIndex = null;
+
+  // eslint-disable-next-line react/destructuring-assignment
   config = DIRECTION_CONFIG[this.props.direction];
 
   state = {
     compensation: 0,
     containerStyles: {
+      // eslint-disable-next-line react/destructuring-assignment
       [this.config.scrollDimension]: this.props[this.config.scrollDimension],
-      [`max${this.config.scrollDimension[0].toUpperCase()}${this.config.scrollDimension.slice(1)}`]:
-        this.props[`max${this.config.scrollDimension[0].toUpperCase()}${this.config.scrollDimension.slice(1)}`] ||
-        'none',
+      [`max${this.config.scrollDimension[0].toUpperCase()}${this.config.scrollDimension.slice(
+        1
+      )}`]:
+        // eslint-disable-next-line react/destructuring-assignment
+        this.props[
+          `max${this.config.scrollDimension[0].toUpperCase()}${this.config.scrollDimension.slice(
+            1
+          )}`
+        ] || 'none',
       overflowX: this.config.overflow.x,
       overflowY: this.config.overflow.y,
       willChange: 'scroll-position'
     },
-    containerSizeSet: false,
     moving: false,
+    // eslint-disable-next-line react/destructuring-assignment
     observe: this.props.observe !== undefined ? this.props.observe : true,
     scrollerStyles: {
       cursor: 'pointer',
+      // eslint-disable-next-line react/destructuring-assignment
       ...this.props.scroller,
       position: 'absolute',
       // See https://www.chromestatus.com/features/5093566007214080
@@ -79,8 +90,10 @@ export class Scroll extends PureComponent {
     scrollerTranslate: 0,
     wrapperStyles: {
       position: 'relative',
+      // eslint-disable-next-line react/destructuring-assignment
       display: this.props.display || 'inline-block',
       [this.config.wrapper.overflowDimension]: 'auto',
+      // eslint-disable-next-line react/destructuring-assignment
       width: this.props.direction === 'horizontal' ? this.props.width : 'auto',
       overflow: 'hidden'
     }
@@ -89,8 +102,11 @@ export class Scroll extends PureComponent {
   observer = null;
 
   container = React.createRef();
+
   scroller = React.createRef();
+
   track = React.createRef();
+
   wrapper = React.createRef();
 
   getPagePosition(event, touchEvent, mouseEvent) {
@@ -112,16 +128,22 @@ export class Scroll extends PureComponent {
     document.addEventListener('mouseup', this.stopMovingScroller);
     window.addEventListener('resize', this.resizeHandler);
 
-    if (this.state.observe) {
+    const { observe } = this.state;
+    const { initTimeout, noInitTimeout, observerTimeout } = this.props;
+
+    if (observe) {
       const observerConfig = {
         characterData: true,
         childList: true,
         subtree: true
       };
       this.observer = new MutationObserver(() => {
-        if (typeof this.props.observerTimeout === 'number') {
+        if (typeof observerTimeout === 'number') {
           clearTimeout(this.observeTimeoutIndex);
-          this.observeTimeoutIndex = setTimeout(this.scrollerResizeAndTranslate, this.props.observerTimeout);
+          this.observeTimeoutIndex = setTimeout(
+            this.scrollerResizeAndTranslate,
+            observerTimeout
+          );
         } else {
           this.scrollerResizeAndTranslate();
         }
@@ -129,83 +151,110 @@ export class Scroll extends PureComponent {
       this.observer.observe(this.container.current, observerConfig);
     }
 
-    if (this.props.noInitTimeout) {
+    if (noInitTimeout) {
       this.setScrollerSize(this.setScrollerTranslate);
     } else {
       setTimeout(
         () => {
           this.setScrollerSize(this.setScrollerTranslate);
         },
-        typeof this.props.initTimeout === 'number' ? this.props.initTimeout : Scroll.initTimeout
+        typeof initTimeout === 'number' ? initTimeout : Scroll.initTimeout
       );
     }
   }
 
-  scrollerSizeSetter = cb => {
+  scrollerSizeSetter = (cb) => {
     if (!this.container.current) {
       return;
     }
+
+    const { minScrollerSize } = this.props;
+
     const o = this.container.current[this.config.container.offsetDimension];
     const s = this.container.current[this.config.container.scrollDimension];
 
-    const relativeSize = Math.floor(Math.pow(o, 2) / s);
-    let size = Math.max(relativeSize, this.props.minScrollerSize || 0);
+    const relativeSize = Math.floor(o ** 2 / s);
+    let size = Math.max(relativeSize, minScrollerSize || 0);
     size = Math.min(size, o);
 
-    this._isMounted &&
-      this.setState(prevState => {
-        return {
+    if (this._isMounted) {
+      this.setState(
+        (prevState) => ({
           scrollerStyles: {
             ...prevState.scrollerStyles,
             display: s <= o ? 'none' : 'block',
             [this.config.scrollDimension]: `${size}px`
           }
-        };
-      }, cb);
+        }),
+        cb
+      );
+    }
   };
 
-  debouncedScrollerSizeSetter = Scroll.debounce(this.scrollerSizeSetter, this.props.scrollSizeDebounce);
+  debouncedScrollerSizeSetter = Scroll.debounce(
+    this.scrollerSizeSetter,
+    // eslint-disable-next-line react/destructuring-assignment
+    this.props.scrollSizeDebounce
+  );
 
   setScrollerSize(cb) {
-    if (typeof this.props.scrollSizeDebounce === 'number') {
+    const { scrollSizeDebounce } = this.props;
+
+    if (typeof scrollSizeDebounce === 'number') {
       this.debouncedScrollerSizeSetter(cb);
     } else {
       this.scrollerSizeSetter(cb);
     }
   }
 
-  startMovingScroller = event => {
+  startMovingScroller = (event) => {
     if (!this.wrapper.current) {
       return;
     }
     event.preventDefault();
     event.stopPropagation();
 
+    const { scrollerTranslate } = this.state;
+
     const pagePosition = this.getPagePosition(event, 'touchstart', 'mousedown');
 
-    this._isMounted &&
+    if (this._isMounted) {
       this.setState({
         compensation:
-          pagePosition - this.state.scrollerTranslate - this.wrapper.current[this.config.wrapper.offsetSide],
+          pagePosition -
+          scrollerTranslate -
+          this.wrapper.current[this.config.wrapper.offsetSide],
         moving: true
       });
+    }
   };
 
-  moveScroller = event => {
-    if (this.state.moving && this.scroller.current && this.wrapper.current) {
-      const pagePosition = this.getPagePosition(event, 'touchmove', 'mousemove');
+  moveScroller = (event) => {
+    const { compensation, moving } = this.state;
+    const { direction } = this.props;
+
+    if (moving && this.scroller.current && this.wrapper.current) {
+      const pagePosition = this.getPagePosition(
+        event,
+        'touchmove',
+        'mousemove'
+      );
       const max =
         this.wrapper.current[this.config.wrapper.clientDimension] -
         this.scroller.current[this.config.scroller.clientDimension];
-      let translate = pagePosition - this.wrapper.current[this.config.wrapper.offsetSide] - this.state.compensation;
+      let translate =
+        pagePosition -
+        this.wrapper.current[this.config.wrapper.offsetSide] -
+        compensation;
       translate = Math.max(0, translate);
       translate = Math.min(max, translate);
-      this._isMounted &&
-        this.setState(prevState => {
+
+      if (this._isMounted) {
+        this.setState((prevState) => {
           let transform = '';
-          if (this.props.direction === 'horizontal') {
+          if (direction === 'horizontal') {
             transform = `translate3d(${translate}px,0px,0px)`;
-          } else if (this.props.direction === 'vertical') {
+          } else if (direction === 'vertical') {
             transform = `translate3d(0px,${translate}px,0px)`;
           }
 
@@ -219,23 +268,32 @@ export class Scroll extends PureComponent {
             scrollerTranslate: translate
           };
         });
+      }
+
       this.setContainerScroll(translate);
     }
   };
 
-  setScrollerTranslate = event => {
-    if (!this.state.moving && this.container.current) {
+  setScrollerTranslate = () => {
+    const { moving, scrollerStyles } = this.state;
+    const { direction } = this.props;
+
+    if (!moving && this.container.current) {
       const scr = this.container.current[this.config.container.scrollSide];
       const o = this.container.current[this.config.container.offsetDimension];
       const s = this.container.current[this.config.container.scrollDimension];
-      const scrollerSize = parseInt(this.state.scrollerStyles[this.config.scrollDimension], 10);
+      const scrollerSize = parseInt(
+        scrollerStyles[this.config.scrollDimension],
+        10
+      );
       const translate = ((o - scrollerSize) / (s - o)) * scr || 0;
-      this._isMounted &&
-        this.setState(prevState => {
+
+      if (this._isMounted) {
+        this.setState((prevState) => {
           let transform = '';
-          if (this.props.direction === 'horizontal') {
+          if (direction === 'horizontal') {
             transform = `translate3d(${translate}px,0px,0px)`;
-          } else if (this.props.direction === 'vertical') {
+          } else if (direction === 'vertical') {
             transform = `translate3d(0px,${translate}px,0px)`;
           }
           return {
@@ -248,13 +306,17 @@ export class Scroll extends PureComponent {
             scrollerTranslate: translate
           };
         });
+      }
     }
   };
 
-  stopMovingScroller = event => {
+  stopMovingScroller = (event) => {
     event.preventDefault();
     event.stopPropagation();
-    this._isMounted && this.setState({ moving: false });
+
+    if (this._isMounted) {
+      this.setState({ moving: false });
+    }
   };
 
   setContainerScroll(val) {
@@ -264,37 +326,48 @@ export class Scroll extends PureComponent {
 
     const o = this.container.current[this.config.container.offsetDimension];
     const s = this.container.current[this.config.container.scrollDimension];
-    const scrollerSize = this.scroller.current[this.config.scroller.offsetDimension];
+    const scrollerSize =
+      this.scroller.current[this.config.scroller.offsetDimension];
     if (requestAnimationFrame) {
       requestAnimationFrame(() => {
         if (this.container.current) {
-          this.container.current[this.config.container.scrollSide] = ((s - o) / (o - scrollerSize)) * val;
+          this.container.current[this.config.container.scrollSide] =
+            ((s - o) / (o - scrollerSize)) * val;
         }
       });
     } else {
-      this.container.current[this.config.container.scrollSide] = ((s - o) / (o - scrollerSize)) * val;
+      this.container.current[this.config.container.scrollSide] =
+        ((s - o) / (o - scrollerSize)) * val;
     }
   }
 
-  resizeHandler = Scroll.debounce(this.scrollerResizeAndTranslate, this.props.resizeDebounce || Scroll.resizeDebounce);
+  resizeHandler = Scroll.debounce(
+    this.scrollerResizeAndTranslate,
+    // eslint-disable-next-line react/destructuring-assignment
+    this.props.resizeDebounce || Scroll.resizeDebounce
+  );
 
   clean() {
     document.removeEventListener('mousemove', this.moveScroller);
     document.removeEventListener('mouseup', this.stopMovingScroller);
     window.removeEventListener('resize', this.resizeHandler);
-    this.observer && this.observer.disconnect();
+
+    if (this.observer) {
+      this.observer.disconnect();
+    }
+
     clearTimeout(this.observeTimeoutIndex);
     clearTimeout(this.dimensionChangeTimeoutIndex);
     this.observer = null;
   }
 
-  propagateWheelAsScrollOnContainer = event => {
+  propagateWheelAsScrollOnContainer = (event) => {
     if (this.container && this.container.current) {
       this.container.current.scrollTop += event.deltaY;
     }
   };
 
-  trackClickHandler = event => {
+  trackClickHandler = (event) => {
     event.stopPropagation();
     if (
       !this.container ||
@@ -309,9 +382,12 @@ export class Scroll extends PureComponent {
       return;
     }
 
+    const { onTrackClick, trackShift } = this.props;
+
     let direction = null;
 
-    const { top: scrollerTop, bottom: scrollerBottom } = this.scroller.current.getBoundingClientRect();
+    const { top: scrollerTop, bottom: scrollerBottom } =
+      this.scroller.current.getBoundingClientRect();
 
     const clickIsAboveScroller = event.clientY < scrollerTop;
     const clickIsBelowScroller = event.clientY > scrollerBottom;
@@ -322,32 +398,38 @@ export class Scroll extends PureComponent {
       direction = 1;
     }
 
-    if (typeof this.props.onTrackClick === 'function') {
-      this.props.onTrackClick({
+    if (typeof onTrackClick === 'function') {
+      onTrackClick({
         container: this.container.current,
         direction,
         event,
         track: this.track.current
       });
-    } else if (typeof this.props.trackShift === 'number') {
-      this.container.current.scrollTop += direction * this.props.trackShift;
+    } else if (typeof trackShift === 'number') {
+      this.container.current.scrollTop += direction * trackShift;
     }
   };
 
   dimensionChangeHandler = () => {
     const { scrollDimension } = this.config;
-    const maxScrollDimension = `max${scrollDimension[0].toUpperCase()}${scrollDimension.slice(1)}`;
+    const maxScrollDimension = `max${scrollDimension[0].toUpperCase()}${scrollDimension.slice(
+      1
+    )}`;
 
-    this._isMounted &&
-      this.setState(prevState => {
-        return {
+    if (this._isMounted) {
+      this.setState(
+        (prevState) => ({
           containerStyles: {
             ...prevState.containerStyles,
+            // eslint-disable-next-line react/destructuring-assignment
             [scrollDimension]: this.props[scrollDimension],
+            // eslint-disable-next-line react/destructuring-assignment
             [maxScrollDimension]: this.props[maxScrollDimension] || 'none'
           }
-        };
-      }, this.scrollerResizeAndTranslate);
+        }),
+        this.scrollerResizeAndTranslate
+      );
+    }
   };
 
   // *************************************************
@@ -355,12 +437,23 @@ export class Scroll extends PureComponent {
   // *************************************************
 
   render() {
-    return this.props.children ? (
-      <div className={this.props.className} ref={this.wrapper} style={this.state.wrapperStyles}>
-        {this.props.track && this.state.scrollerStyles.display === 'block' ? (
+    const { containerStyles, scrollerStyles, wrapperStyles } = this.state;
+    const {
+      children,
+      className,
+      containerClass,
+      direction,
+      scrollerClass,
+      track,
+      trackClass
+    } = this.props;
+
+    return children ? (
+      <div className={className} ref={this.wrapper} style={wrapperStyles}>
+        {track && scrollerStyles.display === 'block' ? (
           <div
             ref={this.track}
-            className={this.props.trackClass}
+            className={trackClass}
             style={{
               position: 'absolute',
               height: '100%'
@@ -370,61 +463,71 @@ export class Scroll extends PureComponent {
           />
         ) : null}
         <div
-          className={this.props.scrollerClass}
+          className={scrollerClass}
           onMouseDown={this.startMovingScroller}
           onTouchStart={this.startMovingScroller}
           onTouchMove={this.moveScroller}
           onTouchEnd={this.stopMovingScroller}
           onWheel={this.propagateWheelAsScrollOnContainer}
           ref={this.scroller}
-          style={this.state.scrollerStyles}
+          style={scrollerStyles}
         />
         <div
-          data-direction={this.props.direction}
-          className={['react-scroll-component', this.props.containerClass].filter(Boolean).join(' ')}
+          data-direction={direction}
+          className={['react-scroll-component', containerClass]
+            .filter(Boolean)
+            .join(' ')}
           onScroll={this.setScrollerTranslate}
           ref={this.container}
-          style={this.state.containerStyles}
+          style={containerStyles}
           onTransitionEnd={this.scrollerResizeAndTranslate}
         >
-          {this.props.children}
+          {children}
         </div>
       </div>
     ) : null;
   }
 
   componentDidMount() {
+    const { containerRef } = this.props;
+
     this._isMounted = true;
     Scroll.setStyleTag();
     this.init();
-    if (typeof this.props.containerRef === 'function') {
-      this.props.containerRef(this.container);
+    if (typeof containerRef === 'function') {
+      containerRef(this.container);
     }
   }
 
   componentDidUpdate(prevProps, prevState) {
     const { scrollDimension } = this.config;
+    const { scrollerStyles } = this.state;
+    const { dimensionChangeTimeout, onScrollerToggle } = this.props;
 
-    const maxScrollDimension = `max${scrollDimension[0].toUpperCase()}${scrollDimension.slice(1)}`;
+    const maxScrollDimension = `max${scrollDimension[0].toUpperCase()}${scrollDimension.slice(
+      1
+    )}`;
 
     if (
+      // eslint-disable-next-line react/destructuring-assignment
       this.props[scrollDimension] !== prevProps[scrollDimension] ||
+      // eslint-disable-next-line react/destructuring-assignment
       this.props[maxScrollDimension] !== prevProps[maxScrollDimension]
     ) {
-      if (typeof this.props.dimensionChangeTimeout === 'number') {
+      if (typeof dimensionChangeTimeout === 'number') {
         clearTimeout(this.dimensionChangeTimeoutIndex);
         this.dimensionChangeTimeoutIndex = setTimeout(() => {
           this.dimensionChangeHandler();
-        }, this.props.dimensionChangeTimeout);
+        }, dimensionChangeTimeout);
       } else {
         this.dimensionChangeHandler();
       }
     }
 
-    if (prevState.scrollerStyles.display !== this.state.scrollerStyles.display) {
-      if (typeof this.props.onScrollerToggle === 'function') {
-        this.props.onScrollerToggle({
-          isDisplayed: this.state.scrollerStyles.display === 'block'
+    if (prevState.scrollerStyles.display !== scrollerStyles.display) {
+      if (typeof onScrollerToggle === 'function') {
+        onScrollerToggle({
+          isDisplayed: scrollerStyles.display === 'block'
         });
       }
     }
