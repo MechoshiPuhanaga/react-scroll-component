@@ -1,56 +1,57 @@
+// Config for scroll direction:
 export default {
   horizontal: {
     container: {
       dimension: 'height',
       offsetDimension: 'offsetWidth',
       scrollDimension: 'scrollWidth',
-      scrollSide: 'scrollLeft'
+      scrollSide: 'scrollLeft',
     },
     overflow: {
       x: 'scroll',
-      y: 'hidden'
+      y: 'hidden',
     },
     pageCoordinate: 'pageX',
     scrollbar: {
       clientDimension: 'clientHeight',
-      offsetDimension: 'offsetHeight'
+      offsetDimension: 'offsetHeight',
     },
     scrollDimension: 'width',
     scroller: {
       clientDimension: 'clientWidth',
-      offsetDimension: 'offsetWidth'
+      offsetDimension: 'offsetWidth',
     },
     wrapper: {
       clientDimension: 'clientWidth',
       offsetSide: 'offsetLeft',
-      overflowDimension: 'height'
-    }
+      overflowDimension: 'height',
+    },
   },
   vertical: {
     container: {
       dimension: 'width',
       offsetDimension: 'offsetHeight',
       scrollDimension: 'scrollHeight',
-      scrollSide: 'scrollTop'
+      scrollSide: 'scrollTop',
     },
     overflow: {
       x: 'hidden',
-      y: 'scroll'
+      y: 'scroll',
     },
     pageCoordinate: 'pageY',
     scrollbar: {
       clientDimension: 'clientWidth',
-      offsetDimension: 'offsetWidth'
+      offsetDimension: 'offsetWidth',
     },
     scrollDimension: 'height',
     scroller: {
       clientDimension: 'clientHeight',
-      offsetDimension: 'offsetHeight'
+      offsetDimension: 'offsetHeight',
     },
     wrapper: {
       clientDimension: 'clientHeight',
       offsetSide: 'offsetTop',
-      overflowDimension: 'width'
-    }
-  }
+      overflowDimension: 'width',
+    },
+  },
 };
