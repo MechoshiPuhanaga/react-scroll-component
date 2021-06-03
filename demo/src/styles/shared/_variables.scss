@@ -1,0 +1,68 @@
+$recourcePath: "/src/assets";
+
+$colorBkg: #484848;
+$colorNav: #646c6f;
+
+$colorTxt: whitesmoke;
+$colorTxtActive: #b7c6ba;
+//  colors:
+$color1: #0d1b1f;
+$color2: #4db8d6;
+$color3: #de5555;
+$color4: #54b4ec;
+$color5: #f5f5f5;
+$color6: #085f53;
+$color7: #713559;
+$color8: #685e57; // #634f3a;
+$color9: #3b6290;
+$color10: #757575;
+$color11: #b6bbbd;
+$color12: #b1461d;
+$color14: #d89b13;
+$color15: #1d3d77;
+$color16: #04881c;
+
+// borders:
+$borderRadius: 0.3rem;
+
+// fonts-sizes:
+$fontXS: 1rem;
+$fontSmall: 1.2rem;
+$fontMedium: 1.4rem;
+$fontLarge: 1.6rem;
+$fontXL: 1.8rem;
+$fontXXL: 2rem;
+$fontXXXL: 3rem;
+
+// offsets:
+$offsetMin: 0.1rem;
+$offsetTiny: 0.5rem;
+$offsetSmall: 1rem;
+$offsetMedium: 2rem;
+$offsetLarge: 3rem;
+$offsetXL: 4rem;
+$offsetXXL: 5rem;
+
+// transitions:
+$transitionFast: 200ms;
+$transitionNormal: 300ms;
+$transitionSlow: 500ms;
+
+:export {
+  color1: $color1;
+  color2: $color2;
+  color3: $color3;
+  color4: $color4;
+  color5: $color5;
+  color6: $color6;
+  color7: $color7;
+  color8: $color8;
+  color9: $color9;
+  color10: $color10;
+  color11: $color11;
+  color12: $color12;
+  color14: $color14;
+  color15: $color15;
+  color16: $color16;
+  recourcePath: $recourcePath;
+}

@@ -1,0 +1,109 @@
+:root {
+  font-size: 10px;
+}
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+  background-color: $color5;
+}
+
+body {
+  overflow: hidden;
+  font-family: Roboto Condensed, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+
+  &:not(input) {
+    user-select: none;
+  }
+}
+
+li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+ul,
+p {
+  margin: 0;
+  padding: 0;
+}
+
+p {
+  margin-block-start: 0;
+  margin-block-end: 0;
+  margin-inline-start: 0;
+  margin-inline-end: 0;
+}
+
+input::-ms-clear {
+  display: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+input,
+button {
+  outline: none;
+}
+
+@mixin headings($from: 1, $to: 6) {
+  @for $i from $from through $to {
+    h#{$i} {
+      @content;
+    }
+  }
+}
+
+@include headings() {
+  margin: 0;
+  margin-block-start: 0;
+  margin-block-end: 0;
+  margin-inline-start: 0;
+  margin-inline-end: 0;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+button {
+  font: inherit;
+  font-family: inherit;
+  margin: 0;
+  padding: 0;
+  border: none;
+  outline: none;
+  appearance: none;
+}
+
+figure {
+  margin-block-start: 0;
+  margin-block-end: 0;
+  margin-inline-start: 0;
+  margin-inline-end: 0;
+}
+
+td {
+  padding: 0;
+}
+
+table {
+  border-collapse: collapse;
+}
