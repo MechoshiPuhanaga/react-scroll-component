@@ -1,0 +1,11 @@
+.content {
+  width: 400px;
+  height: 1000px;
+  background-color: beige;
+}
+
+.scroller {
+  width: 10px;
+  right: 10px;
+  background-color: aqua;
+}

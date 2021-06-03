@@ -1,0 +1,7 @@
+{
+  "component": {
+    "componentFolder": "src",
+    "testFiles": "**/*test.{js,jsx}"
+  },
+  "video": false
+}

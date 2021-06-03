@@ -3,3 +3,9 @@ node_modules
 
 # ide:
 .idea
+.vscode
+
+
+# tests
+.nyc_output
+coverage

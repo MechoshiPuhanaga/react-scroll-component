@@ -148,7 +148,10 @@ export class Scroll extends PureComponent {
           this.scrollerResizeAndTranslate();
         }
       });
-      this.observer.observe(this.container.current, observerConfig);
+
+      if (this.container.current) {
+        this.observer.observe(this.container.current, observerConfig);
+      }
     }
 
     if (noInitTimeout) {
@@ -363,6 +366,7 @@ export class Scroll extends PureComponent {
 
   propagateWheelAsScrollOnContainer = (event) => {
     if (this.container && this.container.current) {
+      // TODO: fix for horizontal too
       this.container.current.scrollTop += event.deltaY;
     }
   };

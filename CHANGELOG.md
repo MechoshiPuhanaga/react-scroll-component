@@ -1,3 +1,11 @@
+# 0.6.7
+
+## Infra:
+
+1. Add `Cypress` for testing components
+2. Add coverage badges
+3. Add `Husky` hooks
+
 # 0.6.6
 
 ## Infra:
