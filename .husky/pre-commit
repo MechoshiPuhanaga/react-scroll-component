@@ -1,0 +1,4 @@
+yarn test
+yarn badge:coverage
+git add 'README.md'
+exit 1
