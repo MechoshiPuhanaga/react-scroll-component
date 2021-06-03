@@ -5,7 +5,7 @@
 1. Add `Cypress` for testing components
 2. Add coverage badges
 3. Add `Husky` hooks
-4. Setup `Jest` and `Enzyme`
+4. Setup `Jest` and `Enzyme` environment
 
 # 0.6.6
 
