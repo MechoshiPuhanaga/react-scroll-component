@@ -41,11 +41,6 @@
     "dist",
     "src"
   ],
-  "husky": {
-    "hooks": {
-      "pre-commit": "yarn test && yarn badge:coverage && git add 'README.md'"
-    }
-  },
   "devDependencies": {
     "@babel/core": "7.14.3",
     "@babel/eslint-parser": "7.14.4",
