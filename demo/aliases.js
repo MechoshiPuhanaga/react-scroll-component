@@ -2,7 +2,6 @@ const path = require('path');
 
 const aliases = {
   web: {
-    '@root': path.resolve(__dirname, '/'),
     '@components': path.resolve(__dirname, 'src/components'),
     '@pages': path.resolve(__dirname, 'src/pages'),
     '@services': path.resolve(__dirname, 'src/services'),

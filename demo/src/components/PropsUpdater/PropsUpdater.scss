@@ -1,0 +1,24 @@
+.PropsUpdater {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 1rem;
+  width: 70rem;
+
+  .PropHeader {
+    display: flex;
+    justify-content: center;
+    padding: 0.5rem;
+    color: $color1;
+    font-size: 1.8rem;
+    background-color: $color10;
+    border-radius: 0.3rem;
+
+    @include boxShadow();
+  }
+
+  .Props {
+    display: grid;
+    justify-content: center;
+    padding: 2rem;
+  }
+}

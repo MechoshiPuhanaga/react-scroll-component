@@ -1,37 +1,37 @@
 import { memo } from 'react';
 import {
   BrowserRouter,
-  // Redirect,
+  Redirect,
   Route,
   Switch,
   NavLink
 } from 'react-router-dom';
 
-import App from '@root/src/App';
-
-import {} from '@pages';
+import pages from '@pages';
+import App from '../App';
 
 const Router = () => {
   return (
     <BrowserRouter>
       <ul className="Navigation">
-        <NavLink
-          className="NavLink"
-          activeClassName="NavLinkActive"
-          exact
-          to="/AsyncSetStateClassCmp"
-        >
-          AsyncSetStateClassCmp
-        </NavLink>
+        {pages.map(({ name, route }) => (
+          <NavLink
+            key={route}
+            className="NavLink"
+            activeClassName="NavLinkActive"
+            exact
+            to={`/${route}`}
+          >
+            {name}
+          </NavLink>
+        ))}
       </ul>
       <App>
         <Switch>
-          <Route
-            path="/AsyncSetStateClassCmp"
-            exact
-            component={AsyncSetStateClassCmp}
-          />
-          <Redirect to={routes.root} />
+          {pages.map(({ cmp, route }) => (
+            <Route key={route} path={`/${route}`} exact component={cmp} />
+          ))}
+          <Redirect to="/" />
         </Switch>
       </App>
     </BrowserRouter>

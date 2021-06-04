@@ -1,0 +1,44 @@
+:global(.Navigation) {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 1rem;
+  margin: 1rem;
+}
+
+:global(a.NavLink) {
+  display: flex;
+  justify-content: center;
+  flex: 1;
+  padding: 1rem;
+  color: $color11;
+  font-size: 1.8rem;
+  text-decoration: none;
+  text-align: center;
+  background-color: $colorBkg;
+  border-radius: 0.6rem;
+
+  @include boxShadow();
+}
+
+:global(a.NavLinkActive) {
+  color: $color5;
+  background-color: $color1;
+}
+
+:global(button) {
+  display: inline-block;
+  margin: 1rem;
+  padding: 1rem;
+  color: $colorTxt;
+  text-decoration: none;
+  text-align: center;
+  background-color: $color1;
+  border: none;
+  outline: none;
+  cursor: pointer;
+
+  &:active {
+    color: $color16;
+    background-color: $color10;
+  }
+}

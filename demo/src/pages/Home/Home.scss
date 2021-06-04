@@ -1,0 +1,10 @@
+.Home {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+
+  .About {
+    color: $color1;
+    font-size: 3rem;
+  }
+}

@@ -14,6 +14,7 @@ module.exports = {
   rules: {
     'arrow-body-style': 'off',
     'comma-dangle': 'off',
+    'import/prefer-default-export': 'off',
     'import/no-unresolved': 'off',
     'linebreak-style': 'off',
     'no-param-reassign': 'off',

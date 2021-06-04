@@ -1,6 +1,6 @@
 import { render } from 'react-dom';
 import './styles/index.scss';
 
-import App from './App';
+import Router from './router';
 
-render(<App />, document.getElementById('app'));
+render(<Router />, document.getElementById('app'));
