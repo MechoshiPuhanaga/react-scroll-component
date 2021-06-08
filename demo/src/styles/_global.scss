@@ -1,8 +1,14 @@
 :global(.Navigation) {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, 0.2fr);
   grid-gap: 1rem;
+  justify-content: center;
+  align-items: center;
   margin: 1rem;
+
+  @media only screen and (max-width: 1000px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 :global(a.NavLink) {
@@ -14,7 +20,7 @@
   font-size: 1.8rem;
   text-decoration: none;
   text-align: center;
-  background-color: $colorBkg;
+  background-color: $color18;
   border-radius: 0.6rem;
 
   @include boxShadow();
@@ -22,23 +28,45 @@
 
 :global(a.NavLinkActive) {
   color: $color5;
-  background-color: $color1;
+  background-color: $color19;
+}
+
+:global(input) {
+  display: inline-block;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  color: $colorTxt;
+  font-size: 1.5em;
+  background-color: rgba($color9, 0.2);
+  border: 0.1rem solid $color9;
+  border-radius: 0.6rem;
+  outline: none;
+  box-shadow: 0 0.1rem 0 $color9;
+  transition: background-color 300ms linear;
+
+  &:focus,
+  :not(:empty) {
+    background-color: $color4;
+  }
 }
 
 :global(button) {
   display: inline-block;
-  margin: 1rem;
-  padding: 1rem;
+  padding: 0.5rem 1rem;
   color: $colorTxt;
+  font-size: 1.6rem;
+  font-weight: bold;
   text-decoration: none;
-  text-align: center;
-  background-color: $color1;
-  border: none;
-  outline: none;
+  text-shadow: 0 -0.1rem 0 rgba($color1, 0.5);
+  background-color: $color7;
+  border: 0.1rem solid $color9;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.3rem 0 $color9, 0 0.3rem 1.5rem rgba($color1, 0.2),
+    inset 0 0.1rem 0 rgba($color9, 0.2), inset 0 0 0.3rem rgba($color9, 0.2);
+  transition: background-color 300ms linear;
   cursor: pointer;
 
-  &:active {
-    color: $color16;
-    background-color: $color10;
+  &:global(.active) {
+    background-color: $color4;
   }
 }

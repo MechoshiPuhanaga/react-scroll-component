@@ -6,11 +6,13 @@ body,
 html {
   margin: 0;
   padding: 0;
-  background-color: $colorBkg;
+}
+
+html {
+  background-color: $colorBkgHTML;
 }
 
 body {
-  overflow: hidden;
   font-family: Roboto Condensed, sans-serif;
 }
 

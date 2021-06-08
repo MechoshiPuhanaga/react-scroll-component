@@ -1,24 +1,30 @@
-.PropsUpdater {
+.PropsContainer {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-gap: 1rem;
-  width: 70rem;
+  justify-content: center;
+  grid-template-columns: repeat((2, 1fr));
+  grid-gap: 2rem;
+  width: 100%;
 
-  .PropHeader {
-    display: flex;
-    justify-content: center;
-    padding: 0.5rem;
-    color: $color1;
-    font-size: 1.8rem;
-    background-color: $color10;
-    border-radius: 0.3rem;
+  @media only screen and (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
+
+  .PropBox {
+    display: grid;
+    grid-template-columns: repeat((2, 1fr));
+    grid-gap: 1rem;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: $color7;
+    border-radius: 0.6rem;
 
     @include boxShadow();
   }
 
-  .Props {
-    display: grid;
-    justify-content: center;
-    padding: 2rem;
+  .PropLabel {
+    color: $color5;
+    font-size: 1.6rem;
+    font-weight: bold;
+    letter-spacing: 0.1rem;
   }
 }

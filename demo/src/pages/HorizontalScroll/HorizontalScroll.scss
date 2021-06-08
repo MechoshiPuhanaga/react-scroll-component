@@ -1,5 +1,56 @@
 .HorizontalScroll {
-  display: flex;
-  justify-content: center;
-  padding: 2rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 1rem;
+  padding: 0 1rem;
+
+  @media only screen and (max-width: 1300px) {
+    grid-template-columns: 1fr;
+  }
+
+  .ColumnContainer {
+    display: grid;
+    grid-gap: 2rem;
+    justify-items: center;
+    grid-template-rows: 0fr 0fr;
+    grid-auto-rows: minmax(20rem, auto);
+    padding-top: 4rem;
+
+    .ColumnHeader {
+      padding: 1rem 5rem;
+      color: $color5;
+      font-size: 1.8rem;
+      background-color: $color9;
+      border-radius: 0.6rem;
+
+      @include boxShadow();
+    }
+  }
+
+  .ScrollContainer {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 0.6rem;
+
+    @include boxShadow();
+
+    .Content {
+      width: 100%;
+      font-size: 2rem;
+    }
+
+    .Scroller {
+      right: 3px;
+      width: 8px;
+      background-color: lightblue;
+      border-radius: 3px;
+    }
+
+    .Track {
+      right: 0;
+      width: 14px;
+      background-color: grey;
+      cursor: pointer;
+    }
+  }
 }

@@ -4,9 +4,10 @@ module.exports = {
     es2021: true
   },
   extends: ['plugin:react/recommended', 'airbnb'],
+  parser: 'babel-eslint',
   parserOptions: {
     ecmaFeatures: { jsx: true },
-    ecmaVersion: 12,
+    ecmaVersion: 2021,
     sourceType: 'module'
   },
   plugins: ['jsx-a11y', 'prettier', 'react', 'react-hooks'],
@@ -20,6 +21,8 @@ module.exports = {
     'no-param-reassign': 'off',
     'no-unused-vars': 'warn',
     'no-undef': 'error',
+    'react/jsx-props-no-spreading': 'off',
+    'react/prop-types': 'off',
     'react/react-in-jsx-scope': 'off'
   }
 };
