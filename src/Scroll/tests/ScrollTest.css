@@ -1,11 +1,23 @@
-.content {
+.content-vertical {
   width: 400px;
   height: 1000px;
   background-color: beige;
 }
 
-.scroller {
-  width: 10px;
+.scroller-vertical {
   right: 10px;
+  width: 10px;
+  background-color: aqua;
+}
+
+.content-horizontal {
+  width: 1000px;
+  height: 400px;
+  background-color: beige;
+}
+
+.scroller-horizontal {
+  bottom: 10px;
+  height: 10px;
   background-color: aqua;
 }

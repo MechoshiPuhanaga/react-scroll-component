@@ -1,10 +1,10 @@
 {
-  "branches": 48,
-  "functions": 70,
-  "lines": 75,
-  "statements": 74,
+  "branches": 55,
+  "functions": 76,
+  "lines": 78,
+  "statements": 79,
   "all": true,
   "check-coverage": true,
-  "include": ["src/**/*.jsx"],
+  "include": ["src/**/*.{js,jsx}"],
   "exclude": ["src/**/*.test.js"]
 }
