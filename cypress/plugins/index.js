@@ -9,7 +9,6 @@ module.exports = (on, config) => {
   config.env.webpackFilename = path.resolve(__dirname, '../../webpack.test.js');
 
   require('@cypress/code-coverage/task')(on, config);
-  // on('file:preprocessor', require('@cypress/code-coverage/use-babelrc'));
 
   require('@cypress/react/plugins/load-webpack')(on, config, config.env);
 
