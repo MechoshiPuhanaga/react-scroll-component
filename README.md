@@ -7,7 +7,7 @@
 
 | Statements                                                            | Branches                                                            | Functions                                                         | Lines                                                            |
 | --------------------------------------------------------------------- | ------------------------------------------------------------------- | ----------------------------------------------------------------- | ---------------------------------------------------------------- |
-| ![Statements](https://img.shields.io/badge/Coverage-74.73%25-red.svg) | ![Branches](https://img.shields.io/badge/Coverage-48.33%25-red.svg) | ![Functions](https://img.shields.io/badge/Coverage-70%25-red.svg) | ![Lines](https://img.shields.io/badge/Coverage-75.14%25-red.svg) |
+| ![Statements](https://img.shields.io/badge/statements-74.73%25-red.svg) | ![Branches](https://img.shields.io/badge/branches-49.17%25-red.svg) | ![Functions](https://img.shields.io/badge/functions-70%25-red.svg) | ![Lines](https://img.shields.io/badge/lines-75.14%25-red.svg) |
 
 ## React version
 
