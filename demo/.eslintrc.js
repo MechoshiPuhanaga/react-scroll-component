@@ -1,11 +1,20 @@
+const path = require('path');
+
 module.exports = {
   env: {
     browser: true,
     es2021: true
   },
-  extends: ['plugin:react/recommended', 'airbnb'],
-  parser: 'babel-eslint',
+  extends: [
+    'airbnb',
+    'plugin:react/recommended',
+    'plugin:react-hooks/recommended'
+  ],
+  parser: '@babel/eslint-parser',
   parserOptions: {
+    babelOptions: {
+      configFile: path.join(__dirname, '.babelrc')
+    },
     ecmaFeatures: { jsx: true },
     ecmaVersion: 2021,
     sourceType: 'module'
@@ -18,11 +27,15 @@ module.exports = {
     'import/prefer-default-export': 'off',
     'import/no-unresolved': 'off',
     'linebreak-style': 'off',
+    'no-console': 'off',
     'no-param-reassign': 'off',
     'no-unused-vars': 'warn',
     'no-undef': 'error',
+    'object-curly-newline': 'off',
     'react/jsx-props-no-spreading': 'off',
     'react/prop-types': 'off',
-    'react/react-in-jsx-scope': 'off'
+    'react/react-in-jsx-scope': 'off',
+    'react-hooks/rules-of-hooks': 'error',
+    'react-hooks/exhaustive-deps': 'warn'
   }
 };

@@ -5,7 +5,7 @@
   grid-gap: 2rem;
   width: 100%;
 
-  @media only screen and (max-width: 600px) {
+  @media only screen and (max-width: 850px) {
     grid-template-columns: 1fr;
   }
 
@@ -27,4 +27,55 @@
     font-weight: bold;
     letter-spacing: 0.1rem;
   }
+}
+
+.ScrollLightGrey {
+  padding-right: 4rem;
+  background-color: $color11;
+}
+
+.ScrollLightBlue {
+  padding-right: 4rem;
+  background-color: $color8;
+}
+
+.ScrollTransparent {
+  padding-right: 4rem;
+}
+
+.ScrollContainerBorder {
+  box-sizing: border-box;
+  border: 0.1rem solid $color10;
+  border-radius: 0.6rem;
+}
+
+.ScrollContainerNoBorder {
+}
+
+.ScrollerLightBlue {
+  right: 0.3rem;
+  width: 0.8rem;
+  background-color: $color8;
+  border-radius: 0.3rem;
+}
+
+.ScrollerDarkBlue {
+  right: 0.3rem;
+  width: 0.8rem;
+  background-color: $color9;
+  border-radius: 0.3rem;
+}
+
+.TrackLight {
+  right: 0;
+  width: 1.4rem;
+  background-color: $color11;
+  cursor: pointer;
+}
+
+.TrackDark {
+  right: 0;
+  width: 1.4rem;
+  background-color: $color16;
+  cursor: pointer;
 }

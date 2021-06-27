@@ -1,10 +1,16 @@
 :global(.Navigation) {
   display: grid;
-  grid-template-columns: repeat(3, 0.2fr);
+  grid-template-columns: repeat(3, 0.1fr);
   grid-gap: 1rem;
   justify-content: center;
   align-items: center;
-  margin: 1rem;
+  background-color: $color16;
+
+  @include boxShadow();
+
+  @media only screen and (max-width: 1680px) {
+    grid-template-columns: repeat(3, 0.2fr);
+  }
 
   @media only screen and (max-width: 1000px) {
     grid-template-columns: repeat(3, 1fr);
@@ -15,20 +21,18 @@
   display: flex;
   justify-content: center;
   flex: 1;
+  height: 4rem;
   padding: 1rem;
-  color: $color11;
+  color: $color5;
   font-size: 1.8rem;
   text-decoration: none;
   text-align: center;
-  background-color: $color18;
   border-radius: 0.6rem;
-
-  @include boxShadow();
 }
 
 :global(a.NavLinkActive) {
-  color: $color5;
-  background-color: $color19;
+  color: $color8;
+  border-bottom: 0.2rem solid $color8;
 }
 
 :global(input) {

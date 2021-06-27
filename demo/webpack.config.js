@@ -33,7 +33,8 @@ module.exports = (env, argv) => {
         : 'static/js/[name].chunk.[contenthash:8].js',
       // Otput root directory
       path: path.resolve(__dirname, 'dist'),
-      // Tells webpack where to serve public assets from related to base url. In order to run index.html from Live Server just pass '/dist/'
+      // Tells webpack where to serve public assets from related to base url.
+      // In order to run index.html from Live Server just pass '/dist/'
       publicPath: '/'
     },
     resolve: {
