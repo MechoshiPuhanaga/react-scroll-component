@@ -29,6 +29,7 @@
   }
 }
 
+/* Scroll className */
 .ScrollLightGrey {
   padding-right: 4rem;
   background-color: $color11;
@@ -43,6 +44,28 @@
   padding-right: 4rem;
 }
 
+/* Horizontal */
+.ScrollLightGreyHorizontal {
+  position: relative;
+  padding-bottom: 4rem;
+  background-color: $color11;
+}
+
+.ScrollLightBlueHorizontal {
+  position: relative;
+  padding-bottom: 4rem;
+  background-color: $color8;
+}
+
+.ScrollTransparentHorizontal {
+  position: relative;
+  padding-bottom: 4rem;
+}
+/* Horizontal */
+
+/* Scroll className */
+
+/* Scroll containerClass */
 .ScrollContainerBorder {
   box-sizing: border-box;
   border: 0.1rem solid $color10;
@@ -50,8 +73,11 @@
 }
 
 .ScrollContainerNoBorder {
+  border: unset;
 }
+/* Scroll containerClass */
 
+/* Scroll scrollerClass */
 .ScrollerLightBlue {
   right: 0.3rem;
   width: 0.8rem;
@@ -66,6 +92,28 @@
   border-radius: 0.3rem;
 }
 
+/* Horizontal */
+.ScrollerLightBlueHorizontal {
+  position: absolute !important;
+  bottom: 0.2rem;
+  z-index: 1000;
+  height: 0.8rem;
+  background-color: $color8;
+  border-radius: 0.3rem;
+}
+
+.ScrollerDarkBlueHorizontal {
+  position: absolute !important;
+  bottom: 0.2rem;
+  z-index: 1000;
+  height: 0.8rem;
+  background-color: $color9;
+  border-radius: 0.3rem;
+}
+/* Horizontal */
+/* Scroll scrollerClass */
+
+/* Scroll trackClass */
 .TrackLight {
   right: 0;
   width: 1.4rem;
@@ -79,3 +127,4 @@
   background-color: $color16;
   cursor: pointer;
 }
+/* Scroll trackClass */

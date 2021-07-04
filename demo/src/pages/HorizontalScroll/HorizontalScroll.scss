@@ -28,7 +28,6 @@
   }
 
   .ScrollWrapper {
-    width: 100%;
     padding: 1rem;
     background-color: $color5;
     border-radius: 0.6rem;
@@ -40,31 +39,9 @@
       font-size: 2rem;
     }
 
-    .Scroll {
-      padding-right: 4rem;
-      background-color: $color11;
-      border-radius: 0.6rem;
-    }
-
-    .ScrollContainer {
-      border: 0.1rem solid $color10;
-      border-radius: 0.6rem;
-
-      @include boxShadow();
-    }
-
-    .Scroller {
-      right: 0.3rem;
-      width: 0.8rem;
-      background-color: $color8;
-      border-radius: 0.3rem;
-    }
-
-    .Track {
-      right: 0;
-      width: 1.4rem;
-      background-color: $color10;
-      cursor: pointer;
+    .ContentHorizontal {
+      width: 1200px;
+      font-size: 2rem;
     }
   }
 }

@@ -5,9 +5,79 @@ import { ToggleButtons } from './components';
 
 import styles from './PropsUpdater.scss';
 
-const PropsUpdater = ({ setScrollProp }) => {
+const PropsUpdater = ({ direction, setDirection, setScrollProp }) => {
   return (
     <div className={styles.PropsContainer}>
+      <div className={styles.PropBox}>
+        <span className={styles.PropLabel}>direction</span>
+        <ToggleButtons
+          buttons={[
+            {
+              txt: 'vertical',
+              onClick: () => {
+                setScrollProp({
+                  name: 'direction',
+                  value: 'vertical'
+                });
+                setDirection('vertical');
+              }
+            },
+            {
+              txt: 'horizontal',
+              onClick: () => {
+                setScrollProp({
+                  name: 'direction',
+                  value: 'horizontal'
+                });
+                setDirection('horizontal');
+              }
+            },
+            {
+              txt: 'combined',
+              onClick: () => {
+                setDirection('combined');
+              }
+            }
+          ]}
+        />
+      </div>
+
+      {direction === 'combined' || direction === 'vertical' ? (
+        <div className={styles.PropBox}>
+          <label htmlFor="height" className={styles.PropLabel}>
+            height in px
+          </label>
+          <input
+            id="height"
+            type="number"
+            onChange={({ target: { value } }) => {
+              setScrollProp({
+                name: 'height',
+                value: parseFloat(value) > 0 ? parseFloat(value) : 0
+              });
+            }}
+          />
+        </div>
+      ) : null}
+
+      {direction === 'combined' || direction === 'horizontal' ? (
+        <div className={styles.PropBox}>
+          <label htmlFor="height" className={styles.PropLabel}>
+            width in px
+          </label>
+          <input
+            id="width"
+            type="number"
+            onChange={({ target: { value } }) => {
+              setScrollProp({
+                name: 'width',
+                value: parseFloat(value) > 0 ? parseFloat(value) : 0
+              });
+            }}
+          />
+        </div>
+      ) : null}
+
       <div className={styles.PropBox}>
         <span className={styles.PropLabel}>className</span>
         <ToggleButtons
@@ -42,6 +112,7 @@ const PropsUpdater = ({ setScrollProp }) => {
           ]}
         />
       </div>
+
       <div className={styles.PropBox}>
         <span className={styles.PropLabel}>containerClass</span>
         <ToggleButtons
@@ -67,6 +138,7 @@ const PropsUpdater = ({ setScrollProp }) => {
           ]}
         />
       </div>
+
       <div className={styles.PropBox}>
         <span className={styles.PropLabel}>scrollerClass</span>
         <ToggleButtons
@@ -92,6 +164,7 @@ const PropsUpdater = ({ setScrollProp }) => {
           ]}
         />
       </div>
+
       <div className={styles.PropBox}>
         <span className={styles.PropLabel}>track</span>
         <ToggleButtons
@@ -117,6 +190,7 @@ const PropsUpdater = ({ setScrollProp }) => {
           ]}
         />
       </div>
+
       <div className={styles.PropBox}>
         <span className={styles.PropLabel}>trackClass</span>
         <ToggleButtons
@@ -142,6 +216,7 @@ const PropsUpdater = ({ setScrollProp }) => {
           ]}
         />
       </div>
+
       <div className={styles.PropBox}>
         <label htmlFor="trackShift" className={styles.PropLabel}>
           trackShift in px
@@ -153,21 +228,6 @@ const PropsUpdater = ({ setScrollProp }) => {
             setScrollProp({
               name: 'trackShift',
               value: parseFloat(value)
-            });
-          }}
-        />
-      </div>
-      <div className={styles.PropBox}>
-        <label htmlFor="height" className={styles.PropLabel}>
-          height in px
-        </label>
-        <input
-          id="height"
-          type="number"
-          onChange={({ target: { value } }) => {
-            setScrollProp({
-              name: 'height',
-              value: parseFloat(value) > 0 ? parseFloat(value) : 0
             });
           }}
         />
