@@ -5,7 +5,13 @@ import { ToggleButtons } from './components';
 
 import styles from './PropsUpdater.scss';
 
-const PropsUpdater = ({ direction, setDirection, setScrollProp }) => {
+const PropsUpdater = ({
+  direction,
+  setDirection,
+  setScrollProp,
+  setScrollPropHorizontal,
+  setSCrollPropVertical
+}) => {
   return (
     <div className={styles.PropsContainer}>
       <div className={styles.PropBox}>
@@ -39,6 +45,9 @@ const PropsUpdater = ({ direction, setDirection, setScrollProp }) => {
               }
             }
           ]}
+          predefinedIndex={['vertical', 'horizontal', 'combined'].indexOf(
+            direction
+          )}
         />
       </div>
 
@@ -85,27 +94,51 @@ const PropsUpdater = ({ direction, setDirection, setScrollProp }) => {
             {
               txt: 'LightGrey',
               onClick: () => {
-                setScrollProp({
+                setSCrollPropVertical({
                   name: 'className',
-                  value: styles.ScrollLightGrey
+                  value:
+                    direction === 'combined'
+                      ? styles.CombinedVerticalScrollLightGrey
+                      : styles.VerticalScrollLightGrey
+                });
+
+                setScrollPropHorizontal({
+                  name: 'className',
+                  value: styles.HorizontalScrollLightGrey
                 });
               }
             },
             {
               txt: 'LightBlue',
               onClick: () => {
-                setScrollProp({
+                setSCrollPropVertical({
                   name: 'className',
-                  value: styles.ScrollLightBlue
+                  value:
+                    direction === 'combined'
+                      ? styles.CombinedVerticalScrollLightBlue
+                      : styles.VerticalScrollLightBlue
+                });
+
+                setScrollPropHorizontal({
+                  name: 'className',
+                  value: styles.HorizontalScrollLightBlue
                 });
               }
             },
             {
               txt: 'Transparent',
               onClick: () => {
-                setScrollProp({
+                setSCrollPropVertical({
                   name: 'className',
-                  value: styles.ScrollTransparent
+                  value:
+                    direction === 'combined'
+                      ? styles.CombinedVerticalScrollTransparent
+                      : styles.VerticalScrollTransparent
+                });
+
+                setScrollPropHorizontal({
+                  name: 'className',
+                  value: styles.HorizontalScrollTransparent
                 });
               }
             }
@@ -146,18 +179,28 @@ const PropsUpdater = ({ direction, setDirection, setScrollProp }) => {
             {
               txt: 'LightBlue',
               onClick: () => {
-                setScrollProp({
+                setSCrollPropVertical({
                   name: 'scrollerClass',
-                  value: styles.ScrollerLightBlue
+                  value: styles.VerticalScrollerLightBlue
+                });
+
+                setScrollPropHorizontal({
+                  name: 'scrollerClass',
+                  value: styles.HorizontalScrollerLightBlue
                 });
               }
             },
             {
               txt: 'DarkBlue',
               onClick: () => {
-                setScrollProp({
+                setSCrollPropVertical({
                   name: 'scrollerClass',
-                  value: styles.ScrollerDarkBlue
+                  value: styles.VerticalScrollerDarkBlue
+                });
+
+                setScrollPropHorizontal({
+                  name: 'scrollerClass',
+                  value: styles.HorizontalScrollerDarkBlue
                 });
               }
             }
@@ -198,18 +241,28 @@ const PropsUpdater = ({ direction, setDirection, setScrollProp }) => {
             {
               txt: 'Light',
               onClick: () => {
-                setScrollProp({
+                setSCrollPropVertical({
                   name: 'trackClass',
-                  value: styles.TrackLight
+                  value: styles.VerticalTrackLight
+                });
+
+                setScrollPropHorizontal({
+                  name: 'trackClass',
+                  value: styles.HorizontalTrackLight
                 });
               }
             },
             {
               txt: 'Dark',
               onClick: () => {
-                setScrollProp({
+                setSCrollPropVertical({
                   name: 'trackClass',
-                  value: styles.TrackDark
+                  value: styles.VerticalTrackDark
+                });
+
+                setScrollPropHorizontal({
+                  name: 'trackClass',
+                  value: styles.HorizontalTrackDark
                 });
               }
             }

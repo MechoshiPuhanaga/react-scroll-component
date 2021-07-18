@@ -29,102 +29,149 @@
   }
 }
 
+/* Vertical */
+
 /* Scroll className */
-.ScrollLightGrey {
-  padding-right: 4rem;
+.VerticalScrollLightGrey {
+  padding-right: 1.4rem;
   background-color: $color11;
 }
 
-.ScrollLightBlue {
-  padding-right: 4rem;
+.VerticalScrollLightBlue {
+  padding-right: 1.4rem;
   background-color: $color8;
 }
 
-.ScrollTransparent {
-  padding-right: 4rem;
+.VerticalScrollTransparent {
+  padding-right: 1.4rem;
 }
-
-/* Horizontal */
-.ScrollLightGreyHorizontal {
-  position: relative;
-  padding-bottom: 4rem;
-  background-color: $color11;
-}
-
-.ScrollLightBlueHorizontal {
-  position: relative;
-  padding-bottom: 4rem;
-  background-color: $color8;
-}
-
-.ScrollTransparentHorizontal {
-  position: relative;
-  padding-bottom: 4rem;
-}
-/* Horizontal */
-
 /* Scroll className */
-
-/* Scroll containerClass */
-.ScrollContainerBorder {
-  box-sizing: border-box;
-  border: 0.1rem solid $color10;
-  border-radius: 0.6rem;
-}
-
-.ScrollContainerNoBorder {
-  border: unset;
-}
-/* Scroll containerClass */
 
 /* Scroll scrollerClass */
-.ScrollerLightBlue {
+.VerticalScrollerLightBlue {
   right: 0.3rem;
   width: 0.8rem;
   background-color: $color8;
-  border-radius: 0.3rem;
 }
 
-.ScrollerDarkBlue {
+.VerticalScrollerDarkBlue {
   right: 0.3rem;
   width: 0.8rem;
   background-color: $color9;
-  border-radius: 0.3rem;
 }
-
-/* Horizontal */
-.ScrollerLightBlueHorizontal {
-  position: absolute !important;
-  bottom: 0.2rem;
-  z-index: 1000;
-  height: 0.8rem;
-  background-color: $color8;
-  border-radius: 0.3rem;
-}
-
-.ScrollerDarkBlueHorizontal {
-  position: absolute !important;
-  bottom: 0.2rem;
-  z-index: 1000;
-  height: 0.8rem;
-  background-color: $color9;
-  border-radius: 0.3rem;
-}
-/* Horizontal */
 /* Scroll scrollerClass */
 
 /* Scroll trackClass */
-.TrackLight {
+.VerticalTrackLight {
   right: 0;
   width: 1.4rem;
   background-color: $color11;
   cursor: pointer;
 }
 
-.TrackDark {
+.VerticalTrackDark {
   right: 0;
   width: 1.4rem;
   background-color: $color16;
   cursor: pointer;
 }
 /* Scroll trackClass */
+
+/* Vertical */
+
+/* Horizontal */
+
+/* Scroll className */
+.HorizontalScrollLightGrey {
+  position: relative;
+  background-color: $color11;
+}
+
+.HorizontalScrollLightBlue {
+  position: relative;
+  background-color: $color8;
+}
+
+.HorizontalScrollTransparent {
+  position: relative;
+}
+/* Scroll className */
+
+/* Scroll scrollerClass */
+.HorizontalScrollerLightBlue {
+  position: absolute !important;
+  bottom: 0.3rem;
+  z-index: 1000;
+  height: 0.8rem;
+  background-color: $color8;
+}
+
+.HorizontalScrollerDarkBlue {
+  position: absolute !important;
+  bottom: 0.3rem;
+  z-index: 1000;
+  height: 0.8rem;
+  background-color: $color9;
+}
+/* Scroll scrollerClass */
+
+/* Scroll trackClass */
+.HorizontalTrackLight {
+  position: absolute !important;
+  bottom: 0;
+  z-index: 1000;
+  width: 100%;
+  height: 1.4rem !important;
+  background-color: $color11;
+  cursor: pointer;
+}
+
+.HorizontalTrackDark {
+  position: absolute !important;
+  bottom: 0;
+  z-index: 1000;
+  width: 100%;
+  height: 1.4rem !important;
+  background-color: $color16;
+  cursor: pointer;
+}
+/* Scroll trackClass */
+
+/* Horizontal */
+
+/* Combined */
+
+/* Scroll className */
+.CombinedVerticalScrollLightGrey {
+  position: static !important;
+  padding-right: 1.4rem;
+  background-color: $color11;
+}
+
+.CombinedVerticalScrollLightBlue {
+  position: static !important;
+  padding-right: 1.4rem;
+  background-color: $color8;
+}
+
+.CombinedVerticalScrollTransparent {
+  position: static !important;
+  padding-right: 1.4rem;
+}
+/* Scroll className */
+
+/* Combined */
+
+/* Scroll containerClass */
+.ScrollContainerBorder {
+  box-sizing: border-box;
+  padding-bottom: 1.4rem;
+  border: 0.1rem solid $color10;
+}
+
+.ScrollContainerNoBorder {
+  box-sizing: border-box;
+  padding-bottom: 1.4rem;
+  border: unset;
+}
+/* Scroll containerClass */

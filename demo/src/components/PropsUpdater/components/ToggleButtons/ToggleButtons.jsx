@@ -6,8 +6,8 @@ import styles from './ToggleButtons.scss';
 
 const defaultButtons = [];
 
-const ToggleButtons = ({ buttons = defaultButtons }) => {
-  const [activeIndex, setActiveIndex] = useState(0);
+const ToggleButtons = ({ predefinedIndex = 0, buttons = defaultButtons }) => {
+  const [activeIndex, setActiveIndex] = useState(predefinedIndex);
 
   return (
     <div className={styles.Container}>
